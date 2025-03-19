@@ -1,0 +1,3 @@
+modality: MRI
+datalist: "../datalists/ganmri90-10.json"
+dataroot: "../../../../Datasets/GAN-MRI/Mixed/NII/90-10/Training-test/80-20"

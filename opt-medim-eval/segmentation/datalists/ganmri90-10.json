@@ -1,0 +1,1156 @@
+{
+    "testing": [
+        {
+            "image": "./Test/070_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/273_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/352_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/335_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/309_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/234_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/246_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/084_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/225_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/215_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/090_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/128_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/034_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/310_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/309_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/121_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/159_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/105_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/224_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/045_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/patient0010_4.nii"
+        },
+        {
+            "image": "./Test/298_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/122_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/094_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/313_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/038_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/199_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/002_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/035_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/279_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/097_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/108_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/257_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/324_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/072_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/079_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/patient0067_4.nii"
+        },
+        {
+            "image": "./Test/232_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/patient0120_4.nii"
+        },
+        {
+            "image": "./Test/262_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/095_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/345_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/patient0049_0.nii"
+        },
+        {
+            "image": "./Test/105_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/patient0036_2.nii"
+        },
+        {
+            "image": "./Test/348_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/130_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/210_LA_CINE.nii"
+        },
+        {
+            "image": "./Test/059_SA_CINE.nii"
+        },
+        {
+            "image": "./Test/050_LA_CINE.nii"
+        }
+    ],
+    "training": [
+        {
+            "image": "./Training/059_LA_CINE.nii",
+            "label": "./Labels/059_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/296_LA_CINE.nii",
+            "label": "./Labels/296_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0059_3.nii",
+            "label": "./Labels/patient0059_3.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/211_SA_CINE.nii",
+            "label": "./Labels/211_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/293_LA_CINE.nii",
+            "label": "./Labels/293_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/019_SA_CINE.nii",
+            "label": "./Labels/019_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0096_4.nii",
+            "label": "./Labels/patient0096_4.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/147_SA_CINE.nii",
+            "label": "./Labels/147_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/064_SA_CINE.nii",
+            "label": "./Labels/064_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/007_SA_CINE.nii",
+            "label": "./Labels/007_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/235_LA_CINE.nii",
+            "label": "./Labels/235_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/221_SA_CINE.nii",
+            "label": "./Labels/221_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/297_LA_CINE.nii",
+            "label": "./Labels/297_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/288_SA_CINE.nii",
+            "label": "./Labels/288_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/146_LA_CINE.nii",
+            "label": "./Labels/146_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/288_LA_CINE.nii",
+            "label": "./Labels/288_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/268_LA_CINE.nii",
+            "label": "./Labels/268_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/188_SA_CINE.nii",
+            "label": "./Labels/188_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/062_SA_CINE.nii",
+            "label": "./Labels/062_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/180_SA_CINE.nii",
+            "label": "./Labels/180_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/239_LA_CINE.nii",
+            "label": "./Labels/239_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/047_LA_CINE.nii",
+            "label": "./Labels/047_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/228_SA_CINE.nii",
+            "label": "./Labels/228_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/012_SA_CINE.nii",
+            "label": "./Labels/012_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0058_1.nii",
+            "label": "./Labels/patient0058_1.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/236_LA_CINE.nii",
+            "label": "./Labels/236_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/075_LA_CINE.nii",
+            "label": "./Labels/075_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/052_SA_CINE.nii",
+            "label": "./Labels/052_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/133_LA_CINE.nii",
+            "label": "./Labels/133_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0116_3.nii",
+            "label": "./Labels/patient0116_3.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/290_SA_CINE.nii",
+            "label": "./Labels/290_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/325_SA_CINE.nii",
+            "label": "./Labels/325_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/027_SA_CINE.nii",
+            "label": "./Labels/027_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/041_SA_CINE.nii",
+            "label": "./Labels/041_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0138_0.nii",
+            "label": "./Labels/patient0138_0.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/083_SA_CINE.nii",
+            "label": "./Labels/083_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0052_2.nii",
+            "label": "./Labels/patient0052_2.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/patient0080_0.nii",
+            "label": "./Labels/patient0080_0.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/034_LA_CINE.nii",
+            "label": "./Labels/034_LA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/156_SA_CINE.nii",
+            "label": "./Labels/156_SA_CINE.nii",
+            "fold": 0
+        },
+        {
+            "image": "./Training/155_LA_CINE.nii",
+            "label": "./Labels/155_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/019_LA_CINE.nii",
+            "label": "./Labels/019_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/078_LA_CINE.nii",
+            "label": "./Labels/078_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/067_LA_CINE.nii",
+            "label": "./Labels/067_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/patient0049_4.nii",
+            "label": "./Labels/patient0049_4.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/078_SA_CINE.nii",
+            "label": "./Labels/078_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/186_LA_CINE.nii",
+            "label": "./Labels/186_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/204_SA_CINE.nii",
+            "label": "./Labels/204_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/259_SA_CINE.nii",
+            "label": "./Labels/259_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/092_LA_CINE.nii",
+            "label": "./Labels/092_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/198_SA_CINE.nii",
+            "label": "./Labels/198_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/028_SA_CINE.nii",
+            "label": "./Labels/028_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/287_SA_CINE.nii",
+            "label": "./Labels/287_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/patient0107_0.nii",
+            "label": "./Labels/patient0107_0.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/144_LA_CINE.nii",
+            "label": "./Labels/144_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/269_LA_CINE.nii",
+            "label": "./Labels/269_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/069_SA_CINE.nii",
+            "label": "./Labels/069_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/106_SA_CINE.nii",
+            "label": "./Labels/106_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/357_LA_CINE.nii",
+            "label": "./Labels/357_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/327_LA_CINE.nii",
+            "label": "./Labels/327_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/134_SA_CINE.nii",
+            "label": "./Labels/134_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/091_SA_CINE.nii",
+            "label": "./Labels/091_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/patient0045_3.nii",
+            "label": "./Labels/patient0045_3.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/patient0001_1.nii",
+            "label": "./Labels/patient0001_1.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/025_SA_CINE.nii",
+            "label": "./Labels/025_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/158_LA_CINE.nii",
+            "label": "./Labels/158_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/patient0129_2.nii",
+            "label": "./Labels/patient0129_2.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/240_SA_CINE.nii",
+            "label": "./Labels/240_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/130_SA_CINE.nii",
+            "label": "./Labels/130_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/070_LA_CINE.nii",
+            "label": "./Labels/070_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/295_SA_CINE.nii",
+            "label": "./Labels/295_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/158_SA_CINE.nii",
+            "label": "./Labels/158_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/227_SA_CINE.nii",
+            "label": "./Labels/227_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/055_SA_CINE.nii",
+            "label": "./Labels/055_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/339_SA_CINE.nii",
+            "label": "./Labels/339_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/157_SA_CINE.nii",
+            "label": "./Labels/157_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/207_SA_CINE.nii",
+            "label": "./Labels/207_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/177_SA_CINE.nii",
+            "label": "./Labels/177_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/225_SA_CINE.nii",
+            "label": "./Labels/225_SA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/227_LA_CINE.nii",
+            "label": "./Labels/227_LA_CINE.nii",
+            "fold": 1
+        },
+        {
+            "image": "./Training/159_LA_CINE.nii",
+            "label": "./Labels/159_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/163_LA_CINE.nii",
+            "label": "./Labels/163_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/191_SA_CINE.nii",
+            "label": "./Labels/191_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/195_SA_CINE.nii",
+            "label": "./Labels/195_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/061_LA_CINE.nii",
+            "label": "./Labels/061_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/250_SA_CINE.nii",
+            "label": "./Labels/250_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/023_LA_CINE.nii",
+            "label": "./Labels/023_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/029_SA_CINE.nii",
+            "label": "./Labels/029_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/358_SA_CINE.nii",
+            "label": "./Labels/358_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/316_LA_CINE.nii",
+            "label": "./Labels/316_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/310_LA_CINE.nii",
+            "label": "./Labels/310_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/255_LA_CINE.nii",
+            "label": "./Labels/255_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/001_SA_CINE.nii",
+            "label": "./Labels/001_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/056_LA_CINE.nii",
+            "label": "./Labels/056_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/301_SA_CINE.nii",
+            "label": "./Labels/301_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/082_SA_CINE.nii",
+            "label": "./Labels/082_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/360_LA_CINE.nii",
+            "label": "./Labels/360_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/patient0095_3.nii",
+            "label": "./Labels/patient0095_3.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/125_LA_CINE.nii",
+            "label": "./Labels/125_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/patient0044_0.nii",
+            "label": "./Labels/patient0044_0.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/100_SA_CINE.nii",
+            "label": "./Labels/100_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/196_SA_CINE.nii",
+            "label": "./Labels/196_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/247_SA_CINE.nii",
+            "label": "./Labels/247_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/193_LA_CINE.nii",
+            "label": "./Labels/193_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/022_LA_CINE.nii",
+            "label": "./Labels/022_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/263_LA_CINE.nii",
+            "label": "./Labels/263_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/010_LA_CINE.nii",
+            "label": "./Labels/010_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/335_LA_CINE.nii",
+            "label": "./Labels/335_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/151_SA_CINE.nii",
+            "label": "./Labels/151_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/340_LA_CINE.nii",
+            "label": "./Labels/340_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/036_SA_CINE.nii",
+            "label": "./Labels/036_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/075_SA_CINE.nii",
+            "label": "./Labels/075_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/208_SA_CINE.nii",
+            "label": "./Labels/208_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/094_SA_CINE.nii",
+            "label": "./Labels/094_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/278_LA_CINE.nii",
+            "label": "./Labels/278_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/108_SA_CINE.nii",
+            "label": "./Labels/108_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/190_LA_CINE.nii",
+            "label": "./Labels/190_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/223_SA_CINE.nii",
+            "label": "./Labels/223_SA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/011_LA_CINE.nii",
+            "label": "./Labels/011_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/120_LA_CINE.nii",
+            "label": "./Labels/120_LA_CINE.nii",
+            "fold": 2
+        },
+        {
+            "image": "./Training/144_SA_CINE.nii",
+            "label": "./Labels/144_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/255_SA_CINE.nii",
+            "label": "./Labels/255_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/113_SA_CINE.nii",
+            "label": "./Labels/113_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/312_SA_CINE.nii",
+            "label": "./Labels/312_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/153_SA_CINE.nii",
+            "label": "./Labels/153_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/285_LA_CINE.nii",
+            "label": "./Labels/285_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/201_LA_CINE.nii",
+            "label": "./Labels/201_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/137_SA_CINE.nii",
+            "label": "./Labels/137_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/patient0098_2.nii",
+            "label": "./Labels/patient0098_2.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/230_LA_CINE.nii",
+            "label": "./Labels/230_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/165_SA_CINE.nii",
+            "label": "./Labels/165_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/247_LA_CINE.nii",
+            "label": "./Labels/247_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/063_SA_CINE.nii",
+            "label": "./Labels/063_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/189_SA_CINE.nii",
+            "label": "./Labels/189_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/254_LA_CINE.nii",
+            "label": "./Labels/254_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/109_LA_CINE.nii",
+            "label": "./Labels/109_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/196_LA_CINE.nii",
+            "label": "./Labels/196_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/221_LA_CINE.nii",
+            "label": "./Labels/221_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/323_LA_CINE.nii",
+            "label": "./Labels/323_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/patient0005_4.nii",
+            "label": "./Labels/patient0005_4.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/118_LA_CINE.nii",
+            "label": "./Labels/118_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/patient0014_2.nii",
+            "label": "./Labels/patient0014_2.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/004_SA_CINE.nii",
+            "label": "./Labels/004_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/127_LA_CINE.nii",
+            "label": "./Labels/127_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/116_LA_CINE.nii",
+            "label": "./Labels/116_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/297_SA_CINE.nii",
+            "label": "./Labels/297_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/318_SA_CINE.nii",
+            "label": "./Labels/318_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/161_SA_CINE.nii",
+            "label": "./Labels/161_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/121_SA_CINE.nii",
+            "label": "./Labels/121_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/205_SA_CINE.nii",
+            "label": "./Labels/205_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/053_SA_CINE.nii",
+            "label": "./Labels/053_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/053_LA_CINE.nii",
+            "label": "./Labels/053_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/065_LA_CINE.nii",
+            "label": "./Labels/065_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/333_LA_CINE.nii",
+            "label": "./Labels/333_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/124_LA_CINE.nii",
+            "label": "./Labels/124_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/240_LA_CINE.nii",
+            "label": "./Labels/240_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/patient0016_4.nii",
+            "label": "./Labels/patient0016_4.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/147_LA_CINE.nii",
+            "label": "./Labels/147_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/044_LA_CINE.nii",
+            "label": "./Labels/044_LA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/145_SA_CINE.nii",
+            "label": "./Labels/145_SA_CINE.nii",
+            "fold": 3
+        },
+        {
+            "image": "./Training/237_LA_CINE.nii",
+            "label": "./Labels/237_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/181_LA_CINE.nii",
+            "label": "./Labels/181_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/202_SA_CINE.nii",
+            "label": "./Labels/202_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/222_LA_CINE.nii",
+            "label": "./Labels/222_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/142_LA_CINE.nii",
+            "label": "./Labels/142_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/248_SA_CINE.nii",
+            "label": "./Labels/248_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/307_LA_CINE.nii",
+            "label": "./Labels/307_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/341_SA_CINE.nii",
+            "label": "./Labels/341_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/091_LA_CINE.nii",
+            "label": "./Labels/091_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/330_SA_CINE.nii",
+            "label": "./Labels/330_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/014_SA_CINE.nii",
+            "label": "./Labels/014_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/122_SA_CINE.nii",
+            "label": "./Labels/122_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/107_SA_CINE.nii",
+            "label": "./Labels/107_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/021_SA_CINE.nii",
+            "label": "./Labels/021_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/263_SA_CINE.nii",
+            "label": "./Labels/263_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/260_SA_CINE.nii",
+            "label": "./Labels/260_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/011_SA_CINE.nii",
+            "label": "./Labels/011_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/023_SA_CINE.nii",
+            "label": "./Labels/023_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/216_SA_CINE.nii",
+            "label": "./Labels/216_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/188_LA_CINE.nii",
+            "label": "./Labels/188_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/114_LA_CINE.nii",
+            "label": "./Labels/114_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/006_LA_CINE.nii",
+            "label": "./Labels/006_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/patient0037_0.nii",
+            "label": "./Labels/patient0037_0.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/209_LA_CINE.nii",
+            "label": "./Labels/209_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/214_LA_CINE.nii",
+            "label": "./Labels/214_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/301_LA_CINE.nii",
+            "label": "./Labels/301_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/332_SA_CINE.nii",
+            "label": "./Labels/332_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/267_LA_CINE.nii",
+            "label": "./Labels/267_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/132_SA_CINE.nii",
+            "label": "./Labels/132_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/patient0134_0.nii",
+            "label": "./Labels/patient0134_0.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/045_SA_CINE.nii",
+            "label": "./Labels/045_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/217_SA_CINE.nii",
+            "label": "./Labels/217_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/037_SA_CINE.nii",
+            "label": "./Labels/037_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/187_LA_CINE.nii",
+            "label": "./Labels/187_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/244_SA_CINE.nii",
+            "label": "./Labels/244_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/317_SA_CINE.nii",
+            "label": "./Labels/317_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/207_LA_CINE.nii",
+            "label": "./Labels/207_LA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/220_SA_CINE.nii",
+            "label": "./Labels/220_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/285_SA_CINE.nii",
+            "label": "./Labels/285_SA_CINE.nii",
+            "fold": 4
+        },
+        {
+            "image": "./Training/199_LA_CINE.nii",
+            "label": "./Labels/199_LA_CINE.nii",
+            "fold": 4
+        }
+    ]
+}
