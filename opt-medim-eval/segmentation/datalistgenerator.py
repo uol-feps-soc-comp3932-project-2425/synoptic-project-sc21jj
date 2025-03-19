@@ -4,6 +4,8 @@ import random
 import shutil
 import tempfile
 import argparse
+import yaml
+from collections import OrderedDict
 
 def generate_datalist(dscategory, realpct, dataroot):
 
@@ -51,6 +53,48 @@ def generate_datalist(dscategory, realpct, dataroot):
         json.dump(datalist_json, f, ensure_ascii=False, indent=4)
     print(f"Datalist is saved to {datalist_filepath}")
 
+    # Return datalist filename for task file generation
+    return datalist_file
+
+def generate_taskfile(dscategory, realpct, dataroot, dlfilename):
+
+    task_yaml = {
+        "modality": None,
+        "datalist": None,
+        "dataroot": None
+    }
+
+    if 'mri' in dscategory:
+        task_yaml["modality"] = "MRI"
+    elif 'ct' in dscategory:
+        task_yaml["modality"] = "CT"
+
+    task_yaml["datalist"] = f"../datalists/{dlfilename}"
+
+    task_yaml["dataroot"] = dataroot
+
+    # Format task file name
+    synthpct = 100 - realpct
+    task_file = f"{dscategory}{realpct}-{synthpct}.yaml"
+
+    # Obtain and construct filepath for task file
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    task_filepath = f"{root_dir}/taskfiles/{task_file}"
+    
+    with open(task_filepath, "w") as f:
+        yaml.dump(task_yaml, f, default_flow_style=False, sort_keys=False, default_style="")
+
+    with open(task_filepath, "r") as f:
+        lines = f.readlines()
+    
+    with open(task_filepath, "w") as f:
+        for line in lines:
+            if "datalist:" in line or "dataroot:" in line:
+                line = line.replace(" ", " \"").rstrip() + "\"\n"
+            f.write(line)
+    
+    print(f"Task file is saved to {task_filepath}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate formatted datalist for Auto3DSeg AutoRunner")
     parser.add_argument("--ds_category", type=str, required=True, help="Dataset category being sampled from [ganmri/ganct/dmmri/dmct]")
@@ -58,4 +102,5 @@ if __name__ == "__main__":
     parser.add_argument("--root_dir", type=str, required=True, help="Directory containing the test and training subdirectories")
     args = parser.parse_args()
     
-    generate_datalist(args.ds_category, args.percent_real, args.root_dir)
+    datalist = generate_datalist(args.ds_category, args.percent_real, args.root_dir)
+    generate_taskfile(args.ds_category, args.percent_real, args.root_dir, datalist)
