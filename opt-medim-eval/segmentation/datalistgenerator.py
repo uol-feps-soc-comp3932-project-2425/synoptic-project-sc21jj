@@ -5,7 +5,6 @@ import shutil
 import tempfile
 import argparse
 import yaml
-from collections import OrderedDict
 
 def generate_datalist(dscategory, realpct, dataroot):
 
@@ -69,9 +68,9 @@ def generate_taskfile(dscategory, realpct, dataroot, dlfilename):
     elif 'ct' in dscategory:
         task_yaml["modality"] = "CT"
 
-    task_yaml["datalist"] = f"../datalists/{dlfilename}"
+    task_yaml["datalist"] = f"./datalists/{dlfilename}"
 
-    task_yaml["dataroot"] = dataroot
+    task_yaml["dataroot"] = f"./{dataroot}"
 
     # Format task file name
     synthpct = 100 - realpct
