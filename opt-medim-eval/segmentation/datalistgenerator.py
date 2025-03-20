@@ -16,14 +16,14 @@ def generate_datalist(dscategory, realpct, dataroot):
 
     # Populate JSON with testing images
     datalist_json["testing"] = [
-        {"image": "./Test/" + file} for file in os.listdir(test_dir) if (".nii" in file)
+        {"image": "./Test/" + file} for file in os.listdir(test_dir) if file.endswith((".nii", ".dcm"))
     ]
 
     # Populate JSON with training images and labels
     datalist_json["training"] = [
         {"image": "./Training/" + file, "label": "./Labels/" + file, "fold": 0}
         for file in os.listdir(train_dir)
-        if (".nii" in file)
+        if file.endswith((".nii", ".dcm"))
     ]  # Initialize as single fold
 
     # Randomise training data
@@ -100,4 +100,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     datalist = generate_datalist(args.ds_category, args.percent_real, args.root_dir)
-    #generate_taskfile(args.ds_category, args.percent_real, args.root_dir, datalist)
+    generate_taskfile(args.ds_category, args.percent_real, args.root_dir, datalist)

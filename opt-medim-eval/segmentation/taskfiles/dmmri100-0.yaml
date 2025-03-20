@@ -1,0 +1,3 @@
+modality: MRI
+datalist: "./datalists/dmmri100-0.json"
+dataroot: "./datasets/DM-MRI/Real"
