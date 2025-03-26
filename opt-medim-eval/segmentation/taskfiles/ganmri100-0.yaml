@@ -1,3 +1,0 @@
-modality: MRI
-datalist: "../datalists/ganmri100-0.json"
-dataroot: "../../../../Datasets/GAN-MRI/Real/Train-test/80-20"

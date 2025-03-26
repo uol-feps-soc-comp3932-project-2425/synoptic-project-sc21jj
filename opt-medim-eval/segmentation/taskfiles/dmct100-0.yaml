@@ -1,3 +1,0 @@
-modality: CT
-datalist: "./datalists/dmct100-0.json"
-dataroot: "./datasets/DM-CT/Real"
