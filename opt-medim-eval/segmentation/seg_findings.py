@@ -20,6 +20,72 @@ ganmri100_loss_data = {
     "100% synthetic": [6.190061897, 1.110511743, 0.597303919, 0.386488788, 0.263256865, 0.182324842, 0.096339608, 0.121453243, 0.087791484, 0.075079178, 0.061271388, 0.04472199, 0.040552143, 0.032239854, 0.028314398]
 }
 
+# dmmri10_loss_data = {
+
+# }
+
+# dmmri100_loss_data = {
+
+# }
+
+# Initialising performance data
+ganmri10_perf_data = {
+    'Training Data Ratio': ['100% Real', '50/50', '25/75', '100% Synthetic'],
+    'True DICE Avg': [0.696, 0.784, 0.844, 0.516],
+    'True DICE Var': [0.000450,	0.00986, 0.000166, 0.109],
+    'Predicted DICE Avg': [0.682, 0.761, 0.804, 0.429],
+    'Predicted DICE Var': [0.0000259, 0.00595, 0.00000162, 0.104],
+    'Difference Avg': [0.0142, 0.0236, 0.0402, 0.0871],
+    'Difference Var': [0.000142, 0.000491, 0.000253, 0.000046]
+}
+
+ganmri100_perf_data = {
+    'Training Data Ratio': ['100% Real', '50/50', '40/60', '30/70', '20/80', '10/90', '100% Synthetic'],
+    'True DICE Avg': [0.662, 0.590, 0.580, 0.644, 0.605, 0.623, 0.578],
+    'True DICE Var': [0.0120, 0.0402, 0.0269, 0.0249, 0.0451, 0.0626, 0.0647],
+    'Predicted DICE Avg': [0.602, 0.577, 0.519, 0.594, 0.574, 0.555, 0.546],
+    'Predicted DICE Var': [0.0247, 0.0410, 0.0313, 0.0377, 0.0454, 0.0754, 0.0717],
+    'Difference Avg': [0.0589, 0.0342, 0.0806, 0.0726, 0.0528, 0.0694, 0.0611],
+    'Difference Var': [0.00310, 0.00180, 0.0133, 0.0133, 0.00594, 0.00887, 0.00550]
+}
+
+# dmmri10_perf_data = {
+    # 'Training Data Ratio': ['100% Real', '50/50', '25/75', '100% Synthetic'],
+    # 'True DICE Avg': [],
+    # 'True DICE Var': [],
+    # 'Predicted DICE Avg': [],
+    # 'Predicted DICE Var': [],
+    # 'Difference Avg': [],
+    # 'Difference Var': []
+# }
+
+# dmmri100_perf_data = {
+    # 'Training Data Ratio': ['100% Real', '50/50', '40/60', '30/70', '20/80', '10/90', '100% Synthetic'],
+    # 'True DICE Avg': [],
+    # 'True DICE Var': [],
+    # 'Predicted DICE Avg': [],
+    # 'Predicted DICE Var': [],
+    # 'Difference Avg': [],
+    # 'Difference Var': []
+# }
+
+# Initialising correlation coefficient data
+ganmri10_corrcoef_data = {
+
+}
+
+ganmri100_corrcoef_data = {
+
+}
+
+# dmmri10_corrcoef_data = {
+
+# }
+
+# dmmri100_corrcoef_data = {
+
+# }
+
 def plot_training_loss(loss_data_dict):
     """
     Plots training loss vs. epoch number for different training data ratios.
@@ -50,20 +116,92 @@ def plot_training_loss(loss_data_dict):
     plt.tight_layout()
     plt.show()
 
-#def plot_segmentation_performance():
+def plot_segmentation_performance(perf_data_dict, category_col: str = 'Training Data Ratio'):
+    """
+    Plots three bar charts for True DICE, Predicted DICE, and Difference,
+    each showing average and variance with dual y-axes.
+
+    Parameters:
+    - perf_data_dict (dict): Dictionary with keys:
+        - category_col (e.g. "Training Data Ratio")
+        - 'True DICE Avg', 'True DICE Var'
+        - 'Predicted DICE Avg', 'Predicted DICE Var'
+        - 'Difference Avg', 'Difference Var'
+        Each value should be a list of equal length.
+    - category_col (str): Name of the category key (x-axis).
+    """
+
+    # Ensure all required keys are present
+    required_keys = [
+        category_col,
+        'True DICE Avg', 'True DICE Var',
+        'Predicted DICE Avg', 'Predicted DICE Var',
+        'Difference Avg', 'Difference Var'
+    ]
+    missing = [key for key in required_keys if key not in perf_data_dict]
+    if missing:
+        raise ValueError(f"Missing required keys in data dictionary: {missing}")
+
+    # Ensure all lists are the same length
+    lengths = [len(v) for v in perf_data_dict.values()]
+    if len(set(lengths)) != 1:
+        raise ValueError("All lists in data_dict must be of the same length.")
+
+    # Convert to DataFrame
+    df = pd.DataFrame(perf_data_dict)
+
+    # Extract categories and positions
+    categories = df[category_col]
+    x = np.arange(len(categories))
+    width = 0.35
+
+    charts = [
+        ('True DICE Avg', 'True DICE Var', 'True DICE Score'),
+        ('Predicted DICE Avg', 'Predicted DICE Var', 'Predicted DICE Score'),
+        ('Difference Avg', 'Difference Var', 'Difference in DICE Score')
+    ]
+
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6), constrained_layout=True)
+
+    for i, (avg_key, var_key, title) in enumerate(charts):
+        ax = axes[i]
+        ax2 = ax.twinx()
+
+        bars_avg = ax.bar(x - width/2, df[avg_key], width, label='Average', color='tab:blue')
+        bars_var = ax2.bar(x + width/2, df[var_key], width, label='Variance', color='tab:orange')
+
+        ax.set_title(title)
+        ax.set_xlabel(category_col)
+        ax.set_xticks(x)
+        ax.set_xticklabels(categories, rotation=45, ha='right')
+        ax.set_ylabel('Average')
+        ax2.set_ylabel('Variance')
+
+        # Combine legends
+        lines, labels = ax.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax.legend(lines + lines2, labels + labels2, loc='upper left')
+
+    plt.suptitle('DICE Score Metrics by Training Data Ratio', fontsize=16)
+    plt.show()
+
+#def calc_correlation_coefficient_scores():
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of segmentation tasks using Matplotlib")
-    parser.add_argument("--findings", type=str, default="both", help="Type of segmentation task findings to plot (e.g. loss, performance).")
+    parser.add_argument("--findings", type=str, default="all", help="Type of segmentation task findings to plot (e.g. loss, performance, corrcoef).")
     args = parser.parse_args()
 
     if args.findings == "loss":
-        plot_training_loss(ganmri100_loss_data)
-    # elif args.findings == "performance":
-    #     plot_segmentation_performance()
-    # elif args.findings == "both":
-    #     plot_training_loss(loss_data)
-    #     plot_segmentation_performance()
+        plot_training_loss()
+    elif args.findings == "performance":
+         plot_segmentation_performance(ganmri100_perf_data)
+    elif args.findings == "corrcoef":
+        calc_correlation_coefficient_scores()
+    elif args.findings == "all":
+        plot_training_loss(loss_data)
+        plot_segmentation_performance()
+        calc_correlation_coefficient()
 
 if __name__ == '__main__':
     main()
