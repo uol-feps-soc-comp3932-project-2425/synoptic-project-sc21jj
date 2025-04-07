@@ -8,17 +8,23 @@ def collect_files(directory):
     return [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith('.png')]
 
 def main():
-    parser = argparse.ArgumentParser(description="Randomly sample 250 .png files from a specified directory.")
+    parser = argparse.ArgumentParser(description="Randomly sample a given number of .png files from a specified directory.")
     parser.add_argument("source_dir", type=str, help="Path to the source directory")
-    parser.add_argument("output_dir", type=str, help="Path to the output directory")
+    parser.add_argument("sample_size", type=int, help="Number of .png files to be sampled from source directory")
     args = parser.parse_args()
     
+    # Randomly sample 'sample_size' .png files from source_dir
     files = collect_files(args.source_dir)
-    num_samples = min(250, len(files))
+    num_samples = min(args.sample_size, len(files))
     sampled_files = random.sample(files, num_samples) if num_samples > 0 else []
     
-    os.makedirs(args.output_dir, exist_ok=True)
+    # Generate path to new downsample subdirectory (in the same parent directory as source_dir)
+    parent_dir = os.path.dirname(args.source_dir)
+    source_dir_name = os.path.basename(args.source_dir)
+    downsample_dir = os.path.join(parent_dir, f"{source_dir_name}_downsample")
+    os.makedirs(downsample_dir, exist_ok=True)
     
+    # Copy all downsampled files into downsample subdirectory
     for file in sampled_files:
         shutil.copy(file, args.output_dir)
     

@@ -40,13 +40,13 @@ def main():
     # Step 1: Find all .nii.gz files in source directory
     all_nii_files = find_nii_gz_files(args.source_dir)
 
-    # Step 2: Sample 250 files and copy them to root directory
+    # Step 2: Sample 'sample_size' files and copy them to root directory
     sampled_files = copy_sampled_files(all_nii_files, args.output_dir, args.sample_size)
 
     # Step 3: Decompress the copied files
     decompress_nii_gz_files(args.output_dir)
 
-    print(f"Sampled 50 .nii files from {args.source_dir}.")
+    print(f"Sampled {args.sample_size} .nii files from {args.source_dir}.")
     print(f"Files copied to: {args.output_dir}")
 
 if __name__ == "__main__":
