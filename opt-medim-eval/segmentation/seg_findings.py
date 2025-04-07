@@ -21,11 +21,20 @@ ganmri100_loss_data = {
 }
 
 # dmmri10_loss_data = {
-
+    # "100% real": [],
+    # "50% real, 50% synthetic": [],
+    # "25% real, 75% synthetic": [],
+    # "100% synthetic": []
 # }
 
 # dmmri100_loss_data = {
-
+    # "100% real": [],
+    # "50% real, 50% synthetic": [],
+    # "40% real, 60% synthetic": [],
+    # "30% real, 70% synthetic": [],
+    # "20% real, 80% synthetic": [],
+    # "10% real, 90% synthetic": [],
+    # "100% synthetic": []
 # }
 
 # Initialising performance data
@@ -71,19 +80,43 @@ ganmri100_perf_data = {
 
 # Initialising correlation coefficient data
 ganmri10_corrcoef_data = {
-
+    'Synthetic Percentage': [0, 50, 75, 100],
+    'True DICE Avg': [0.696, 0.784, 0.844, 0.516],
+    'True DICE Var': [0.000450,	0.00986, 0.000166, 0.109],
+    'Predicted DICE Avg': [0.682, 0.761, 0.804, 0.429],
+    'Predicted DICE Var': [0.0000259, 0.00595, 0.00000162, 0.104],
+    'Difference Avg': [0.0142, 0.0236, 0.0402, 0.0871],
+    'Difference Var': [0.000142, 0.000491, 0.000253, 0.000046]
 }
 
 ganmri100_corrcoef_data = {
-
+    'Synthetic Percentage': [0, 50, 60, 70, 80, 90, 100],
+    'True DICE Avg': [0.662, 0.590, 0.580, 0.644, 0.605, 0.623, 0.578],
+    'True DICE Var': [0.0120, 0.0402, 0.0269, 0.0249, 0.0451, 0.0626, 0.0647],
+    'Predicted DICE Avg': [0.602, 0.577, 0.519, 0.594, 0.574, 0.555, 0.546],
+    'Predicted DICE Var': [0.0247, 0.0410, 0.0313, 0.0377, 0.0454, 0.0754, 0.0717],
+    'Difference Avg': [0.0589, 0.0342, 0.0806, 0.0726, 0.0528, 0.0694, 0.0611],
+    'Difference Var': [0.00310, 0.00180, 0.0133, 0.0133, 0.00594, 0.00887, 0.00550]
 }
 
 # dmmri10_corrcoef_data = {
-
+    # 'Synthetic Percentage': [0, 50, 75, 100],
+    # 'True DICE Avg': [],
+    # 'True DICE Var': [],
+    # 'Predicted DICE Avg': [],
+    # 'Predicted DICE Var': [],
+    # 'Difference Avg': [],
+    # 'Difference Var': []
 # }
 
 # dmmri100_corrcoef_data = {
-
+    # 'Synthetic Percentage': [0, 50, 60, 70, 80, 90, 100],
+    # 'True DICE Avg': [],
+    # 'True DICE Var': [],
+    # 'Predicted DICE Avg': [],
+    # 'Predicted DICE Var': [],
+    # 'Difference Avg': [],
+    # 'Difference Var': []
 # }
 
 def plot_training_loss(loss_data_dict):
@@ -185,7 +218,67 @@ def plot_segmentation_performance(perf_data_dict, category_col: str = 'Training 
     plt.suptitle('DICE Score Metrics by Training Data Ratio', fontsize=16)
     plt.show()
 
-#def calc_correlation_coefficient_scores():
+def calc_correlation_coefficient_scores(corrcoef_data_dict):
+    """
+    Compute correlation coefficients between the percentage of synthetic training data
+    and six user-provided variables:
+        - 'Synthetic Percentage'
+        - 'True DICE Avg'
+        - 'True DICE Var'
+        - 'Predicted DICE Avg'
+        - 'Predicted DICE Var'
+        - 'Difference Avg'
+        - 'Difference Var'
+
+    Parameters:
+        data_dict (dict): Dictionary with the following keys:
+        - 'Synthetic Percentage'
+        - 'True DICE Avg'
+        - 'True DICE Var'
+        - 'Predicted DICE Avg'
+        - 'Predicted DICE Var'
+        - 'Difference Avg'
+        - 'Difference Var'
+
+    Returns:
+        pd.Series: Correlation coefficients indexed by variable name.
+    """
+
+    # Convert dict to DataFrame
+    data = pd.DataFrame(corrcoef_data_dict)
+
+    # List of required columns
+    required_cols = [
+        'Synthetic Percentage',
+        'True DICE Avg',
+        'True DICE Var',
+        'Predicted DICE Avg',
+        'Predicted DICE Var',
+        'Difference Avg',
+        'Difference Var'
+    ]
+
+    # Check for missing keys
+    for col in required_cols:
+        if col not in data.columns:
+            raise ValueError(f"Missing required column: {col}")
+
+    # Variables to correlate
+    variables = [
+        'True DICE Avg',
+        'True DICE Var',
+        'Predicted DICE Avg',
+        'Predicted DICE Var',
+        'Difference Avg',
+        'Difference Var'
+    ]
+
+    # Compute Pearson correlation with synthetic_percentage
+    correlations = {
+        var: np.corrcoef(data['Synthetic Percentage'], data[var])[0, 1] for var in variables
+    }
+
+    print(pd.Series(correlations, name='correlation_with_synthetic_percentage'))
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of segmentation tasks using Matplotlib")
@@ -195,11 +288,11 @@ def main():
     if args.findings == "loss":
         plot_training_loss()
     elif args.findings == "performance":
-         plot_segmentation_performance(ganmri100_perf_data)
+         plot_segmentation_performance()
     elif args.findings == "corrcoef":
-        calc_correlation_coefficient_scores()
+        calc_correlation_coefficient_scores(ganmri100_corrcoef_data)
     elif args.findings == "all":
-        plot_training_loss(loss_data)
+        plot_training_loss()
         plot_segmentation_performance()
         calc_correlation_coefficient()
 
