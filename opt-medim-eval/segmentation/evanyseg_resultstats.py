@@ -78,5 +78,5 @@ print("Variance of the true DICE scores:", variance_true_dice)
 print("\nAverage of the predicted DICE scores:", average_predicted_dice)
 print("Variance of the predicted DICE scores:", variance_predicted_dice)
 
-print("\nVariance of the differences:", variance_differences)
-print("Average of the differences:", average_differences)
+print("\nAverage of the differences:", average_differences)
+print("Variance of the differences:", variance_differences)
