@@ -6,7 +6,7 @@ from pathlib import Path
 
 def sample_files(src_images, src_masks, dst_images, dst_masks, num_samples):
     """Sequentially samples num_samples images and corresponding masks from source to destination directories."""
-    image_files = sorted(os.listdir(src_images))[:num_samples]  # Select the first num_samples files sequentially
+    image_files = os.listdir(src_images)[:num_samples]  # Select the first num_samples files sequentially
     
     for img_file in image_files:
         mask_file = img_file.replace(".png", "_mask.png")  # Adjust mask file name
