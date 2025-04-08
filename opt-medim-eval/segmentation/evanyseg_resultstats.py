@@ -72,11 +72,11 @@ average_predicted_dice = calculate_average_predicted_dice(data)
 variance_predicted_dice = calculate_variance_predicted_dice(data)
 
 # Print the results
-print("Variance of the differences:", variance_differences)
-print("Average of the differences:", average_differences)
-
-print("\nAverage of the true DICE scores:", average_true_dice)
+print("Average of the true DICE scores:", average_true_dice)
 print("Variance of the true DICE scores:", variance_true_dice)
 
 print("\nAverage of the predicted DICE scores:", average_predicted_dice)
 print("Variance of the predicted DICE scores:", variance_predicted_dice)
+
+print("\nVariance of the differences:", variance_differences)
+print("Average of the differences:", average_differences)
