@@ -20,12 +20,12 @@ ganmri100_loss_data = {
     "100% synthetic": [6.190061897, 1.110511743, 0.597303919, 0.386488788, 0.263256865, 0.182324842, 0.096339608, 0.121453243, 0.087791484, 0.075079178, 0.061271388, 0.04472199, 0.040552143, 0.032239854, 0.028314398]
 }
 
-# dmmri10_loss_data = {
-    # "100% real": [],
-    # "50% real, 50% synthetic": [],
-    # "25% real, 75% synthetic": [],
-    # "100% synthetic": []
-# }
+dmmri10_loss_data = {
+    "100% real": [3.392434488981962, 0.7111654616892338, 0.9370306126656942, 0.526241984218359, 0.24864055146463215, 0.10232592094689608, 0.11927612498402596, 0.07702357694506645, 0.025520379655063152, 0.051077098585665226, 0.040097322256769985, 0.019676443422213197, 0.03128558746539056, 0.017991948407143354, 0.006700481986626983],
+    "50% real, 50% synthetic": [3.8366779810748994, 3.442188858985901, 1.5813248977065086, 0.3181213685311377, 0.19480938697233796, 0.055797912646085024, 0.040757432114332914, 0.047082269098609686, 0.020779291226062924, 0.08694605800701538, 0.008276051084976643, 0.03528220753651112, 0.026981898408848792, 0.021172424079850316, 0.011901099409442395],
+    "25% real, 75% synthetic": [3.672349989414215, 4.341307699680328, 0.7498690858483315, 0.20546110160648823, 0.10249886801466346, 0.3546401560306549, 0.16270411398727447, 0.11516402231063694, 0.09342485875822604, 0.04299165529664606, 0.029579703230410814, 0.0260923566238489, 0.05226427013985813, 0.01566148425627034, 0.009462561822147109],
+    "100% synthetic": [3.825514055788517, 1.5415263921022415, 0.324888595379889, 0.22651267796754837, 0.12235810607671738, 0.09009029506705701, 0.05040239344816655, 0.07346916571259499, 0.05629854369908571, 0.02220966713503003, 0.0314062674442539, 0.021097276359796524, 0.016179344194824807, 0.006810698192566633, 0.005403943709097803]
+}
 
 # dmmri100_loss_data = {
     # "100% real": [],
@@ -119,7 +119,7 @@ ganmri100_corrcoef_data = {
     # 'Difference Var': []
 # }
 
-def plot_training_loss(loss_data_dict):
+def plot_training_loss(loss_data_dict, dataset_name):
     """
     Plots training loss vs. epoch number for different training data ratios.
     
@@ -140,7 +140,7 @@ def plot_training_loss(loss_data_dict):
     for column in df.columns:
         plt.plot(df.index, df[column], marker='o', label=column)
 
-    plt.title('Training Loss per Epochs for GANMRI100 Datasets')
+    plt.title(f"Training Loss per Epochs for {dataset_name} Datasets")
     plt.xlabel('Epoch')
     plt.ylabel('Training Loss')
     plt.xticks(epochs)
@@ -282,6 +282,7 @@ def calc_correlation_coefficient_scores(corrcoef_data_dict):
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of segmentation tasks using Matplotlib")
+    parser.add_argument("dataset", type=str, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI10)")
     parser.add_argument("--findings", type=str, default="all", help="Type of segmentation task findings to plot (e.g. loss, performance, corrcoef).")
     args = parser.parse_args()
 
@@ -290,7 +291,7 @@ def main():
     elif args.findings == "performance":
          plot_segmentation_performance()
     elif args.findings == "corrcoef":
-        calc_correlation_coefficient_scores(ganmri100_corrcoef_data)
+        calc_correlation_coefficient_scores()
     elif args.findings == "all":
         plot_training_loss()
         plot_segmentation_performance()
