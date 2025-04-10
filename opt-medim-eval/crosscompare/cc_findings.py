@@ -91,61 +91,73 @@ def calc_correlation_coefficient(corrcoef_data_dict):
     # Convert dict to DataFrame
     data = pd.DataFrame(corrcoef_data_dict)
 
-    # List of required columns associated with each encoder
-    required_cols = [
-        'Segmentation Performance Score',
-        'FD',
-        #'IS',
-        'Precision',
-        'Recall',
-        'Unbiased FD',
-        #'FC',
-        'Density',
-        'Coverage'
-    ]
-
-    # Check for missing keys
-    for col in required_cols:
-        if col not in data.columns:
-            raise ValueError(f"Missing required column: {col}")
-
     # Variables to correlate
-    variables = [
-        'FD',
-        #'IS',
-        'Precision',
-        'Recall',
-        'Unbiased FD',
-        #'FC',
-        'Density',
-        'Coverage'
-    ]
+    variables = list(corrcoef_data_dict.keys())[1:]
 
     # Compute Pearson correlation with segmentation performance score
     correlations = {
         var: np.corrcoef(data['Segmentation Performance Score'], data[var])[0, 1] for var in variables
     }
 
-    print(pd.Series(correlations, name='correlation_with_synthetic_percentage'))
+    return pd.Series(correlations, name='correlation_with_synthetic_percentage')
+
+def calc_correlation_coefficient_variance(correlation_coefficient_series):
+    return
 
 def main():
-    parser = argparse.ArgumentParser(description="Plot findings of segmentation tasks using Matplotlib")
-    parser.add_argument("dataset", type=str, help="Name of the dataset category the experiments were performed on (e.g. )")
+    parser = argparse.ArgumentParser(description="Generate findings of cross-comparison between evaluation metric values and segmentation performance scores")
+    parser.add_argument("dataset", type=str, help="Name of the dataset category the experiments were performed on (e.g. ganmri)")
     parser.add_argument("encoder", type=str, help="Name of the feature extractor encoder used to calculate evaluation metrics")
+    parser.add_argment("--findings", type=str, default="all", help="Type of cross-comparison findings to generate (e.g. corrcoef, ccvariance).")
     args = parser.parse_args()
 
     if args.dataset == "ganmri":
         if args.encoder == "inception":
-            calc_correlation_coefficient(ganmri_inception_data)
+            corrcoef = calc_correlation_coefficient(ganmri_inception_data)
+            if args.findings == "corrcoef":
+                print(corrcoef)
+            elif args.findings == "ccvariance":
+                calc_correlation_coefficient_variance(corrcoef)
+            elif args.findings == "all":
+                print(corrcoef)
+                calc_correlation_coefficient_variance(corrcoef)
         elif args.encoder == "dino":
-            calc_correlation_coefficient(ganmri_dinov2_data)
+            corrcoef = calc_correlation_coefficient(ganmri_dinov2_data)
+            if args.findings == "corrcoef":
+                print(corrcoef)
+            elif args.findings == "ccvariance":
+                calc_correlation_coefficient_variance(corrcoef)
+            elif args.findings == "all":
+                print(corrcoef)
+                calc_correlation_coefficient_variance(corrcoef)
         elif args.encoder == "swav":
-            calc_correlation_coefficient(ganmri_swav_data)
+            corrcoef = calc_correlation_coefficient(ganmri_swav_data)
+            if args.findings == "corrcoef":
+                print(corrcoef)
+            elif args.findings == "ccvariance":
+                calc_correlation_coefficient_variance(corrcoef)
+            elif args.findings == "all":
+                print(corrcoef)
+                calc_correlation_coefficient_variance(corrcoef)
     elif args.dataset == "dmmri":
         if args.encoder == "inception":
-            calc_correlation_coefficient(dmmri_inception_data)
+            corrcoef = calc_correlation_coefficient(dmmri_inception_data)
+            if args.findings == "corrcoef":
+                print(corrcoef)
+            elif args.findings == "ccvariance":
+                calc_correlation_coefficient_variance(corrcoef)
+            elif args.findings == "all":
+                print(corrcoef)
+                calc_correlation_coefficient_variance(corrcoef)
         elif args.encoder == "dino":
-            calc_correlation_coefficient(dmmri_dinov2_data)
+            corrcoef = calc_correlation_coefficient(dmmri_dinov2_data)
+            if args.findings == "corrcoef":
+                print(corrcoef)
+            elif args.findings == "ccvariance":
+                calc_correlation_coefficient_variance(corrcoef)
+            elif args.findings == "all":
+                print(corrcoef)
+                calc_correlation_coefficient_variance(corrcoef)
 
 if __name__ == '__main__':
     main()
