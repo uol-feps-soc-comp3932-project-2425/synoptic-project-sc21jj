@@ -7,10 +7,10 @@ standard_synth_pcts = [0, 50, 60, 70, 80, 90, 100]
 
 ganmri_inception_data = {
     'Synthetic Percentage': standard_synth_pcts,
-    'FID': [0.0000654, 97.71195507, 118.8942583, 142.5396132, 163.8193511, 187.5085843, 209.3618621],
+    'FD': [0.0000654, 97.71195507, 118.8942583, 142.5396132, 163.8193511, 187.5085843, 209.3618621],
     'Precision': [1, 0.62, 0.56, 0.47, 0.4, 0.33, 0.25],
     'Recall': [1, 0.9, 0.89, 0.82, 0.76, 0.69, 0.18],
-    'Unbiased FID': [2.013471763, 102.0835921, 113.860521, 131.9922264, 162.933675, 185.2450433, 208.9602984],
+    'Unbiased FD': [2.013471763, 102.0835921, 113.860521, 131.9922264, 162.933675, 185.2450433, 208.9602984],
     'FC': [1.00000022, 0.747001173, 0.703054373, 0.651567962, 0.608663737, 0.561420789, 0.525153788],
     'Density': [1.004, 0.56, 0.482, 0.368, 0.284, 0.182, 0.092],
     'Coverage': [1, 0.96, 0.93, 0.76, 0.67, 0.49, 0.21]
@@ -29,20 +29,20 @@ ganmri_dinov2_data = {
 
 ganmri_swav_data = {
     'Synthetic Percentage': [0, None, None, None, 80, 90, 100],
-    'FSD': [-0.00000260227, None, None, None, 1.72551823829725, 1.07266644193531, -0.00000260227],
+    'FD': [-0.00000260227, None, None, None, 1.72551823829725, 1.07266644193531, -0.00000260227],
     'Precision': [1, None, None, None, 0.8125, 0.9125, 1],
     'Recall': [1, None, None, None, 0.975, 0.975, 1],
-    'Unbiased FSD': [-0.026181584, None, None, None, 1.699023911, 1.16420987, 0.059362462],
+    'Unbiased FD': [-0.026181584, None, None, None, 1.699023911, 1.16420987, 0.059362462],
     'Density': [1, None, None, None, 0.785, 0.91, 1],
     'Coverage': [1, None, None, None, 1, 1, 1]
 }
 
 dmmri_inception_data = {
     'Synthetic Percentage': standard_synth_pcts,
-    'FID': [-0.000152408, 83.53286168, 100.3606771, 114.4805349, 138.1902068, 155.750424, 175.3303901],
+    'FD': [-0.000152408, 83.53286168, 100.3606771, 114.4805349, 138.1902068, 155.750424, 175.3303901],
     'Precision': [0.9, 0.65, 0.6125, 0.575, 0.5125, 0.4125, 0.45],
     'Recall': [0.9, 0.95, 0.875, 0.85, 0.85, 0.6375, 0.375],
-    'Unbiased FID': [-5.794803697, 82.01276525, 97.61067271, 113.9103102, 137.3491422, 153.5731494, 170.7922797],
+    'Unbiased FD': [-5.794803697, 82.01276525, 97.61067271, 113.9103102, 137.3491422, 153.5731494, 170.7922797],
     'FC': [1.000000421, 0.783679559, 0.742143555, 0.703281124, 0.662785039, 0.618545626, 0.552490349],
     'Density': [0.8825, 0.51, 0.415, 0.3875, 0.285, 0.2275, 0.2425],
     'Coverage': [0.9, 0.825, 0.6875, 0.6625, 0.55, 0.4, 0.325]
@@ -124,8 +124,58 @@ def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=
     plt.grid(True)
     plt.show()
 
-def normalise_metric_values():
-    return
+def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
+    """
+    Normalize a metric using min-max scaling.
+    Ignores None values in the series.
+    Optionally inverts scale if higher_is_better is False.
+    """
+    series = pd.Series(series, dtype='float')
+
+    valid_series = series.dropna()
+
+    if min_val is None:
+        min_val = np.percentile(valid_series, 1)
+    if max_val is None:
+        max_val = np.percentile(valid_series, 99)
+
+    if max_val == min_val:
+        norm_values = [1.0 if higher_is_better else 0.0] * len(valid_series)
+    else:
+        norm = (valid_series - min_val) / (max_val - min_val)
+        norm = np.clip(norm, 0, 1)
+        if not higher_is_better:
+            norm = 1 - norm
+        norm_values = norm.tolist()
+
+    # Reconstruct full list with None in original positions
+    result = []
+    norm_iter = iter(norm_values)
+    for val in series:
+        result.append(next(norm_iter) if pd.notna(val) else None)
+
+    return result
+
+def normalise_metric_values(data_dict_to_normalise, swav=False):
+    if swav == True:
+        return {
+            'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
+            'Precision': normalise_metric(data_dict_to_normalise['Precision']),
+            'Recall': normalise_metric(data_dict_to_normalise['Recall']),
+            'Unbiased FD': normalise_metric(data_dict_to_normalise['Unbiased FD'], higher_is_better=False),
+            'Density': normalise_metric(data_dict_to_normalise['Density']),
+            'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
+        }
+    else:
+        return {
+            'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
+            'Precision': normalise_metric(data_dict_to_normalise['Precision']),
+            'Recall': normalise_metric(data_dict_to_normalise['Recall']),
+            'Unbiased FD': normalise_metric(data_dict_to_normalise['Unbiased FD'], higher_is_better=False),
+            'FC': normalise_metric(data_dict_to_normalise['FC']),
+            'Density': normalise_metric(data_dict_to_normalise['Density']),
+            'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
+        }
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
@@ -151,14 +201,18 @@ def main():
             if args.findings == "all":
                 calc_correlation_coefficient(ganmri_swav_data)
         elif args.encoder == None:
-            if args.findings == "FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FID'], ganmri_dinov2_data['FD'], ganmri_swav_data['FSD'])
+            if args.findings == "normalise":
+                print(normalise_metric_values(dict(list(ganmri_inception_data.items())[1:])))
+                print(normalise_metric_values(dict(list(ganmri_dinov2_data.items())[1:])))
+                print(normalise_metric_values(dict(list(ganmri_swav_data.items())[1:]), True))
+            elif args.findings == "FD":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FD'], ganmri_dinov2_data['FD'], ganmri_swav_data['FD'])
             elif args.findings == "Precision":
                 plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Precision'], ganmri_dinov2_data['Precision'], ganmri_swav_data['Precision'])
             elif args.findings == "Recall":
                 plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Recall'], ganmri_dinov2_data['Recall'], ganmri_swav_data['Recall'])
             elif args.findings == "Unbiased-FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Unbiased FID'], ganmri_dinov2_data['Unbiased FD'], ganmri_swav_data['Unbiased FSD'])
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Unbiased FD'], ganmri_dinov2_data['Unbiased FD'], ganmri_swav_data['Unbiased FD'])
             elif args.findings == "FC":
                 plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FC'], ganmri_dinov2_data['FC'], ganmri_swav_data['FC'])
             elif args.findings == "Density":
@@ -176,15 +230,18 @@ def main():
                 calc_correlation_coefficient(dmmri_dinov2_data)
             if args.findings == "all":
                 calc_correlation_coefficient(dmmri_dinov2_data)
-        else:
-            if args.findings == "FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FID'], dmmri_dinov2_data['FD'])
+        elif args.encoder == None:
+            if args.findings == "normalise":
+                print(normalise_metric_values(dict(list(dmmri_inception_data.items())[1:])))
+                print(normalise_metric_values(dict(list(dmmri_dinov2_data.items())[1:])))
+            elif args.findings == "FD":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FD'], dmmri_dinov2_data['FD'])
             elif args.findings == "Precision":
                 plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Precision'], dmmri_dinov2_data['Precision'])
             elif args.findings == "Recall":
                 plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Recall'], dmmri_dinov2_data['Recall'])
             elif args.findings == "Unbiased-FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Unbiased FID'], dmmri_dinov2_data['Unbiased FD'])
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Unbiased FD'], dmmri_dinov2_data['Unbiased FD'])
             elif args.findings == "FC":
                 plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FC'], dmmri_dinov2_data['FC'])
             elif args.findings == "Density":
