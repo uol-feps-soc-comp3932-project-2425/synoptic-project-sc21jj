@@ -124,6 +124,9 @@ def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=
     plt.grid(True)
     plt.show()
 
+def normalise_metric_values():
+    return
+
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
     parser.add_argument("--dataset", type=str, default=None, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
