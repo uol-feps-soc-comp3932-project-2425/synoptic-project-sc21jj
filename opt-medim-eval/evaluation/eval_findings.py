@@ -3,8 +3,10 @@ import pandas as pd
 import numpy as np
 import argparse
 
-ganmri_inception_corrcoef_data = {
-    'Synthetic Percentage': [0, 50, 60, 70, 80, 90, 100],
+standard_synth_pcts = [0, 50, 60, 70, 80, 90, 100]
+
+ganmri_inception_data = {
+    'Synthetic Percentage': standard_synth_pcts,
     'FID': [0.0000654, 97.71195507, 118.8942583, 142.5396132, 163.8193511, 187.5085843, 209.3618621],
     'Precision': [1, 0.62, 0.56, 0.47, 0.4, 0.33, 0.25],
     'Recall': [1, 0.9, 0.89, 0.82, 0.76, 0.69, 0.18],
@@ -14,8 +16,8 @@ ganmri_inception_corrcoef_data = {
     'Coverage': [1, 0.96, 0.93, 0.76, 0.67, 0.49, 0.21]
 }
 
-ganmri_dinov2_corrcoef_data = {
-    'Synthetic Percentage': [0, 50, 60, 70, 80, 90, 100],
+ganmri_dinov2_data = {
+    'Synthetic Percentage': standard_synth_pcts,
     'FD': [0.000229, 283.5476695, 366.6268334, 445.2439924, 533.3296646, 603.146376, 692.9561115],
     'Precision': [1, 0.71, 0.66, 0.61, 0.55, 0.49, 0.43],
     'Recall': [1, 0.92, 0.92, 0.88, 0.87, 0.8, 0.31],
@@ -25,18 +27,18 @@ ganmri_dinov2_corrcoef_data = {
     'Coverage': [1, 0.98, 0.9, 0.77, 0.69, 0.38, 0.2]
 }
 
-ganmri_swav_corrcoef_data = {
-    'Synthetic Percentage': [0, 80, 90, 100],
-    'FSD': [-0.00000260227, 1.72551823829725, 1.07266644193531, -0.00000260227],
-    'Precision': [1, 0.8125, 0.9125, 1],
-    'Recall': [1, 0.975, 0.975, 1],
-    'Unbiased FSD': [-0.026181584, 1.699023911, 1.16420987, 0.059362462],
-    'Density': [1, 0.785, 0.91, 1],
-    'Coverage': [1, 1, 1, 1]
+ganmri_swav_data = {
+    'Synthetic Percentage': [0, None, None, None, 80, 90, 100],
+    'FSD': [-0.00000260227, None, None, None, 1.72551823829725, 1.07266644193531, -0.00000260227],
+    'Precision': [1, None, None, None, 0.8125, 0.9125, 1],
+    'Recall': [1, None, None, None, 0.975, 0.975, 1],
+    'Unbiased FSD': [-0.026181584, None, None, None, 1.699023911, 1.16420987, 0.059362462],
+    'Density': [1, None, None, None, 0.785, 0.91, 1],
+    'Coverage': [1, None, None, None, 1, 1, 1]
 }
 
-dmmri_inception_corrcoef_data = {
-    'Synthetic Percentage': [0, 50, 60, 70, 80, 90, 100],
+dmmri_inception_data = {
+    'Synthetic Percentage': standard_synth_pcts,
     'FID': [-0.000152408, 83.53286168, 100.3606771, 114.4805349, 138.1902068, 155.750424, 175.3303901],
     'Precision': [0.9, 0.65, 0.6125, 0.575, 0.5125, 0.4125, 0.45],
     'Recall': [0.9, 0.95, 0.875, 0.85, 0.85, 0.6375, 0.375],
@@ -46,8 +48,8 @@ dmmri_inception_corrcoef_data = {
     'Coverage': [0.9, 0.825, 0.6875, 0.6625, 0.55, 0.4, 0.325]
 }
 
-dmmri_dinov2_corrcoef_data = {
-    'Synthetic Percentage': [0, 50, 60, 70, 80, 90, 100],
+dmmri_dinov2_data = {
+    'Synthetic Percentage': standard_synth_pcts,
     'FD': [-0.001080752, 720.8734354, 876.7355498, 960.6384922, 1171.32925, 1351.299725, 1595.893447],
     'Precision': [0.9, 0.6875, 0.65, 0.6375, 0.625, 0.5625, 0.55],
     'Recall': [0.9, 0.975, 0.8875, 0.8875, 0.9125, 0.7375, 0.2375],
@@ -98,38 +100,94 @@ def calc_correlation_coefficient(corrcoef_data_dict):
 
     print(pd.Series(correlations, name='correlation_with_synthetic_percentage'))
 
+def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=None):
+    # Create a plot
+    plt.figure(figsize=(10, 6))
+    
+    # Plot the first encoder's data
+    plt.plot(synth_pcts, i_vals, label='Inception', marker='o', linestyle='-', color='blue')
+    
+    # Plot the second encoder's data if available
+    plt.plot(synth_pcts, dino_vals, label='DINOv2', marker='x', linestyle='--', color='green')
+    
+    # Plot the third encoder's data if available
+    if swav_vals is not None:
+        plt.plot(synth_pcts, swav_vals, label='SwAV', marker='s', linestyle='-.', color='red')
+    
+    # Labels and title
+    plt.xlabel('Synthetic Percentage')
+    plt.ylabel(metric)
+    plt.title(f"{metric} Value by Percentage of Synthetic Training Data ({dataset.upper()})")
+    
+    # Show a legend to label each encoder
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
-    parser.add_argument("datasetencoder", type=str, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
+    parser.add_argument("--dataset", type=str, default=None, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
+    parser.add_argument("--encoder", type=str, default=None, help="Name of the feature extractor encoder used for the experiments (e.g. inception, dinov2, swav)")
     parser.add_argument("--findings", type=str, default="all", help="Type of evaluation metric findings to plot (e.g. corrcoef).")
     args = parser.parse_args()
 
-    if args.datasetencoder == "ganmri-inception":
-        if args.findings == "corrcoef":
-            calc_correlation_coefficient(ganmri_inception_corrcoef_data)
-        if args.findings == "all":
-            calc_correlation_coefficient(ganmri_inception_corrcoef_data)
-    elif args.datasetencoder == "ganmri-dino":
-        if args.findings == "corrcoef":
-            calc_correlation_coefficient(ganmri_dinov2_corrcoef_data)
-        if args.findings == "all":
-            calc_correlation_coefficient(ganmri_dinov2_corrcoef_data)
-    elif args.datasetencoder == "ganmri-swav":
-        if args.findings == "corrcoef":
-            calc_correlation_coefficient(ganmri_swav_corrcoef_data)
-        if args.findings == "all":
-            calc_correlation_coefficient(ganmri_swav_corrcoef_data)
-        calc_correlation_coefficient(ganmri_swav_corrcoef_data)
-    elif args.datasetencoder == "dmmri-inception":
-        if args.findings == "corrcoef":
-            calc_correlation_coefficient(dmmri_inception_corrcoef_data)
-        if args.findings == "all":
-            calc_correlation_coefficient(dmmri_inception_corrcoef_data)
-    elif args.datasetencoder == "dmmri-dino":
-        if args.findings == "corrcoef":
-            calc_correlation_coefficient(dmmri_dinov2_corrcoef_data)
-        if args.findings == "all":
-            calc_correlation_coefficient(dmmri_dinov2_corrcoef_data)
+    if args.dataset == "ganmri":
+        if args.encoder == "inception":
+            if args.findings == "corrcoef":
+                calc_correlation_coefficient(ganmri_inception_data)
+            if args.findings == "all":
+                calc_correlation_coefficient(ganmri_inception_data)
+        elif args.encoder == "dinov2":
+            if args.findings == "corrcoef":
+                calc_correlation_coefficient(ganmri_dinov2_data)
+            if args.findings == "all":
+                calc_correlation_coefficient(ganmri_dinov2_data)
+        elif args.encoder == "swav":
+            if args.findings == "corrcoef":
+                calc_correlation_coefficient(ganmri_swav_data)
+            if args.findings == "all":
+                calc_correlation_coefficient(ganmri_swav_data)
+        elif args.encoder == None:
+            if args.findings == "FD":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FID'], ganmri_dinov2_data['FD'], ganmri_swav_data['FSD'])
+            elif args.findings == "Precision":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Precision'], ganmri_dinov2_data['Precision'], ganmri_swav_data['Precision'])
+            elif args.findings == "Recall":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Recall'], ganmri_dinov2_data['Recall'], ganmri_swav_data['Recall'])
+            elif args.findings == "Unbiased-FD":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Unbiased FID'], ganmri_dinov2_data['Unbiased FD'], ganmri_swav_data['Unbiased FSD'])
+            elif args.findings == "FC":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FC'], ganmri_dinov2_data['FC'], ganmri_swav_data['FC'])
+            elif args.findings == "Density":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Density'], ganmri_dinov2_data['Density'], ganmri_swav_data['Density'])
+            elif args.findings == "Coverage":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Coverage'], ganmri_dinov2_data['Coverage'], ganmri_swav_data['Coverage'])
+    if args.dataset == "dmmri":
+        if args.encoder == "inception":
+            if args.findings == "corrcoef":
+                calc_correlation_coefficient(dmmri_inception_data)
+            if args.findings == "all":
+                calc_correlation_coefficient(dmmri_inception_data)
+        elif args.encoder == "dinov2":
+            if args.findings == "corrcoef":
+                calc_correlation_coefficient(dmmri_dinov2_data)
+            if args.findings == "all":
+                calc_correlation_coefficient(dmmri_dinov2_data)
+        else:
+            if args.findings == "FD":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FID'], dmmri_dinov2_data['FD'])
+            elif args.findings == "Precision":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Precision'], dmmri_dinov2_data['Precision'])
+            elif args.findings == "Recall":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Recall'], dmmri_dinov2_data['Recall'])
+            elif args.findings == "Unbiased-FD":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Unbiased FID'], dmmri_dinov2_data['Unbiased FD'])
+            elif args.findings == "FC":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FC'], dmmri_dinov2_data['FC'])
+            elif args.findings == "Density":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Density'], dmmri_dinov2_data['Density'])
+            elif args.findings == "Coverage":
+                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Coverage'], dmmri_dinov2_data['Coverage'])
 
 if __name__ == '__main__':
     main()
