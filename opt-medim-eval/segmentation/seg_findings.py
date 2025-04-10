@@ -281,9 +281,9 @@ def calc_correlation_coefficient(corrcoef_data_dict):
     print(pd.Series(correlations, name='correlation_with_synthetic_percentage'))
 
 def main():
-    parser = argparse.ArgumentParser(description="Plot findings of segmentation tasks using Matplotlib")
+    parser = argparse.ArgumentParser(description="Generate findings of segmentation tasks")
     parser.add_argument("dataset", type=str, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI10)")
-    parser.add_argument("--findings", type=str, default="all", help="Type of segmentation task findings to plot (e.g. loss, performance, corrcoef).")
+    parser.add_argument("--findings", type=str, default="all", help="Type of segmentation task findings to generate (e.g. loss, performance, corrcoef).")
     args = parser.parse_args()
 
     if args.findings == "loss":
