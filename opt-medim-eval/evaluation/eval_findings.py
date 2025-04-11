@@ -104,7 +104,8 @@ def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
 
 def normalise_metric_values(data_dict_to_normalise, swav=False):
     if swav == True:
-        return {
+        normalised_dict = {
+            'Synthetic Percentage': [0, 80, 90, 100],
             'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
             'Precision': normalise_metric(data_dict_to_normalise['Precision']),
             'Recall': normalise_metric(data_dict_to_normalise['Recall']),
@@ -112,8 +113,10 @@ def normalise_metric_values(data_dict_to_normalise, swav=False):
             'Density': normalise_metric(data_dict_to_normalise['Density']),
             'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
         }
+        return normalised_dict
     else:
-        return {
+        normalised_dict = {
+            'Synthetic Percentage': standard_synth_pcts,
             'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
             'Precision': normalise_metric(data_dict_to_normalise['Precision']),
             'Recall': normalise_metric(data_dict_to_normalise['Recall']),
@@ -122,6 +125,7 @@ def normalise_metric_values(data_dict_to_normalise, swav=False):
             'Density': normalise_metric(data_dict_to_normalise['Density']),
             'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
         }
+        return normalised_dict
 
 def calc_correlation_coefficient(corrcoef_data_dict):
     """
@@ -188,7 +192,7 @@ def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=
     plt.grid(True)
     plt.show()
 
-def plot_normalised_metric_graphs(dataset_category, dataset, synth_pcts):
+def plot_metric_graphs(dataset_category, dataset, synth_pcts):
     # Define the metrics to plot
     metrics = ["FD", "Precision", "Recall", "Unbiased FD", "FC", "Density", "Coverage"]
 
@@ -205,6 +209,33 @@ def plot_normalised_metric_graphs(dataset_category, dataset, synth_pcts):
 
         # Plot using the custom function
         plot_metric_graph(dataset_category, metric, synth_pcts, i_vals, dino_vals, swav_vals)
+
+def plot_normalised_metric_graphs(dataset_category, dataset, synth_pcts):
+    # Define the metrics to plot
+    metrics = ["FD", "Precision", "Recall", "Unbiased FD", "FC", "Density", "Coverage"]
+
+    # Normalise dataset values
+    for encoder in dataset.keys():
+        if encoder == "SwAV":
+            dataset[encoder] = normalise_metric_values(dict(list(dataset[encoder].items())[1:]), True)
+        else:
+            dataset[encoder] = normalise_metric_values(dict(list(dataset[encoder].items())[1:]))
+
+    # Generate plots for each metric
+    for metric in metrics:
+        # Collect values for each encoder
+        i_vals = dataset["Inception"][metric]
+        dino_vals = dataset["DINOv2"][metric]
+        swav_vals = None
+        if "SwAV" in dataset.keys():
+            if metric != 'FC':
+                swav_vals = dataset["SwAV"][metric]
+
+        # Plot using plot_metric_graph function
+        plot_metric_graph(dataset_category, metric, synth_pcts, i_vals, dino_vals, swav_vals)
+
+def generate_metric_graph_matrix():
+    return          
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
@@ -234,8 +265,12 @@ def main():
                 print(normalise_metric_values(dict(list(ganmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_dinov2_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_swav_data.items())[1:]), True))
-            elif args.findings == "metricmatrix":
+            elif args.findings == "metrics":
+                plot_metric_graphs("ganmri", ganmri_all_data, standard_synth_pcts)
+            elif args.findings == "normalisedmetrics":
                 plot_normalised_metric_graphs("ganmri", ganmri_all_data, standard_synth_pcts)
+            elif args.findings == "metricmatrix":
+                generate_metric_graph_matrix()
     if args.dataset == "dmmri":
         if args.encoder == "inception":
             if args.findings == "corrcoef":
@@ -251,8 +286,12 @@ def main():
             if args.findings == "normalise":
                 print(normalise_metric_values(dict(list(dmmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(dmmri_dinov2_data.items())[1:])))
-            elif args.findings == "metricmatrix":
+            elif args.findings == "metrics":
+                plot_metric_graphs("dmmri", dmmri_all_data, standard_synth_pcts)
+            elif args.findings == "normalisedmetrics":
                 plot_normalised_metric_graphs("dmmri", dmmri_all_data, standard_synth_pcts)
+            elif args.findings == "metricmatrix":
+                generate_metric_graph_matrix()
 
 if __name__ == '__main__':
     main()
