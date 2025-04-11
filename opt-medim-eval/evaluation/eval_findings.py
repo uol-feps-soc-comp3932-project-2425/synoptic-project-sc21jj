@@ -168,31 +168,39 @@ def calc_correlation_coefficient(corrcoef_data_dict):
 
     print(pd.Series(correlations, name='correlation_with_synthetic_percentage'))
 
-def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=None):
-    # Create a plot
-    plt.figure(figsize=(10, 6))
+def plot_metric_graph(metric, synth_pcts, i_vals, dino_vals, swav_vals=None, ax=None):
+    # If an axis is provided, set matrix to true to indicate that the graph is being plotted as part of a matrix
+    if ax != None:
+        matrix = True
+
+    # If no axis is provided, we create a new one (for individual use cases, but we expect ax in the main function)
+    if ax is None:
+        matrix = False
+        fig, ax = plt.subplots(figsize=(10, 6))  # Create a new figure and axis if ax is None
     
     # Plot the first encoder's data
-    plt.plot(synth_pcts, i_vals, label='Inception', marker='o', linestyle='-', color='blue')
+    ax.plot(synth_pcts, i_vals, label='Inception', marker='o', linestyle='-', color='blue')
     
     # Plot the second encoder's data if available
-    plt.plot(synth_pcts, dino_vals, label='DINOv2', marker='x', linestyle='--', color='green')
+    ax.plot(synth_pcts, dino_vals, label='DINOv2', marker='x', linestyle='--', color='green')
     
     # Plot the third encoder's data if available
     if swav_vals is not None:
-        plt.plot(synth_pcts, swav_vals, label='SwAV', marker='s', linestyle='-.', color='red')
+        ax.plot(synth_pcts, swav_vals, label='SwAV', marker='s', linestyle='-.', color='red')
     
     # Labels and title
-    plt.xlabel('Synthetic Percentage')
-    plt.ylabel(metric)
-    plt.title(f"{metric} Value by Percentage of Synthetic Training Data ({dataset.upper()})")
+    ax.set_xlabel('Synthetic Percentage')
+    ax.set_ylabel(metric)
+    ax.set_title(f"{metric} Value by Synthetic Training Data %")
     
     # Show a legend to label each encoder
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    ax.legend()
+    ax.grid(True)
 
-def plot_metric_graphs(dataset_category, dataset, synth_pcts):
+    if matrix == False:
+        plt.show()
+
+def plot_metric_graphs(dataset, synth_pcts):
     # Define the metrics to plot
     metrics = ["FD", "Precision", "Recall", "Unbiased FD", "FC", "Density", "Coverage"]
 
@@ -208,9 +216,9 @@ def plot_metric_graphs(dataset_category, dataset, synth_pcts):
                 swav_vals = dataset["SwAV"][metric]
 
         # Plot using the custom function
-        plot_metric_graph(dataset_category, metric, synth_pcts, i_vals, dino_vals, swav_vals)
+        plot_metric_graph(metric, synth_pcts, i_vals, dino_vals, swav_vals)
 
-def plot_normalised_metric_graphs(dataset_category, dataset, synth_pcts):
+def plot_normalised_metric_graphs(dataset, synth_pcts):
     # Define the metrics to plot
     metrics = ["FD", "Precision", "Recall", "Unbiased FD", "FC", "Density", "Coverage"]
 
@@ -232,10 +240,40 @@ def plot_normalised_metric_graphs(dataset_category, dataset, synth_pcts):
                 swav_vals = dataset["SwAV"][metric]
 
         # Plot using plot_metric_graph function
-        plot_metric_graph(dataset_category, metric, synth_pcts, i_vals, dino_vals, swav_vals)
+        plot_metric_graph(metric, synth_pcts, i_vals, dino_vals, swav_vals)
 
-def generate_metric_graph_matrix():
-    return          
+def generate_metric_graph_matrix(dataset, synth_pcts):
+    # Define the metrics to plot
+    metrics = ["FD", "Precision", "Recall", "Unbiased FD", "FC", "Density", "Coverage"]
+    
+    # Create a figure with a 2x4 grid (to accommodate 7 graphs, we use 2 rows and 4 columns)
+    fig, axes = plt.subplots(2, 4, figsize=(20, 10))  # Adjust the size as needed
+    axes = axes.flatten()  # Flatten the 2x4 grid to easily access each axis
+
+    # Normalise dataset values
+    for encoder in dataset.keys():
+        if encoder == "SwAV":
+            dataset[encoder] = normalise_metric_values(dict(list(dataset[encoder].items())[1:]), True)
+        else:
+            dataset[encoder] = normalise_metric_values(dict(list(dataset[encoder].items())[1:]))
+
+    # Generate plots for each metric and assign them to a subplot
+    for i, metric in enumerate(metrics):
+        # Collect values for each encoder
+        i_vals = dataset["Inception"][metric]
+        dino_vals = dataset["DINOv2"][metric]
+        swav_vals = None
+        if "SwAV" in dataset.keys():
+            if metric != 'FC':
+                swav_vals = dataset["SwAV"][metric]
+        
+        # Plot the graph on the correct subplot
+        ax = axes[i]
+        plot_metric_graph(metric, synth_pcts, i_vals, dino_vals, swav_vals, ax=ax)
+
+    # Adjust layout for readability
+    plt.tight_layout()
+    plt.show()
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
@@ -266,11 +304,11 @@ def main():
                 print(normalise_metric_values(dict(list(ganmri_dinov2_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_swav_data.items())[1:]), True))
             elif args.findings == "metrics":
-                plot_metric_graphs("ganmri", ganmri_all_data, standard_synth_pcts)
+                plot_metric_graphs(ganmri_all_data, standard_synth_pcts)
             elif args.findings == "normalisedmetrics":
-                plot_normalised_metric_graphs("ganmri", ganmri_all_data, standard_synth_pcts)
+                plot_normalised_metric_graphs(ganmri_all_data, standard_synth_pcts)
             elif args.findings == "metricmatrix":
-                generate_metric_graph_matrix()
+                generate_metric_graph_matrix(ganmri_all_data, standard_synth_pcts)
     if args.dataset == "dmmri":
         if args.encoder == "inception":
             if args.findings == "corrcoef":
@@ -287,11 +325,11 @@ def main():
                 print(normalise_metric_values(dict(list(dmmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(dmmri_dinov2_data.items())[1:])))
             elif args.findings == "metrics":
-                plot_metric_graphs("dmmri", dmmri_all_data, standard_synth_pcts)
+                plot_metric_graphs(dmmri_all_data, standard_synth_pcts)
             elif args.findings == "normalisedmetrics":
-                plot_normalised_metric_graphs("dmmri", dmmri_all_data, standard_synth_pcts)
+                plot_normalised_metric_graphs(dmmri_all_data, standard_synth_pcts)
             elif args.findings == "metricmatrix":
-                generate_metric_graph_matrix()
+                generate_metric_graph_matrix(dmmri_all_data, standard_synth_pcts)
 
 if __name__ == '__main__':
     main()
