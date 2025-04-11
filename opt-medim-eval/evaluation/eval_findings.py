@@ -37,6 +37,12 @@ ganmri_swav_data = {
     'Coverage': [1, None, None, None, 1, 1, 1]
 }
 
+ganmri_all_data = {
+    "Inception": ganmri_inception_data,
+    "DINOv2": ganmri_dinov2_data,
+    "SwAV": ganmri_swav_data
+}
+
 dmmri_inception_data = {
     'Synthetic Percentage': standard_synth_pcts,
     'FD': [-0.000152408, 83.53286168, 100.3606771, 114.4805349, 138.1902068, 155.750424, 175.3303901],
@@ -59,14 +65,9 @@ dmmri_dinov2_data = {
     'Coverage': [0.9, 0.825, 0.675, 0.625, 0.55, 0.3625, 0.15]
 }
 
-dmmri_swav_data = {
-    'Synthetic Percentage': [0],
-    'FD': [-0.00000386387],
-    'Precision': [0.9],
-    'Recall': [0.9],
-    'Unbiased FD': [0.016326608],
-    'Density': [0.8825],
-    'Coverage': [0.9]
+dmmri_all_data = {
+    "Inception": dmmri_inception_data,
+    "DINOv2": dmmri_dinov2_data,    
 }
 
 def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
@@ -187,14 +188,29 @@ def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=
     plt.grid(True)
     plt.show()
 
-def plot_normalised_metric_graphs():
-    return
+def plot_normalised_metric_graphs(dataset_category, dataset, synth_pcts):
+    # Define the metrics to plot
+    metrics = ["FD", "Precision", "Recall", "Unbiased FD", "FC", "Density", "Coverage"]
+
+    # Generate plots for each metric
+    for metric in metrics:
+
+        # Collect values for each encoder
+        i_vals = dataset["Inception"][metric]
+        dino_vals = dataset["DINOv2"][metric]
+        swav_vals = None
+        if "SwAV" in dataset.keys():
+            if metric != 'FC':
+                swav_vals = dataset["SwAV"][metric]
+
+        # Plot using the custom function
+        plot_metric_graph(dataset_category, metric, synth_pcts, i_vals, dino_vals, swav_vals)
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
     parser.add_argument("--dataset", type=str, default=None, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
     parser.add_argument("--encoder", type=str, default=None, help="Name of the feature extractor encoder used for the experiments (e.g. inception, dinov2, swav)")
-    parser.add_argument("--findings", type=str, default="all", help="Type of evaluation metric findings to plot (e.g. corrcoef).")
+    parser.add_argument("--findings", type=str, default="all", help="Type of evaluation metric findings to plot (e.g. corrcoef, normalise, metricmatrix).")
     args = parser.parse_args()
 
     if args.dataset == "ganmri":
@@ -218,20 +234,8 @@ def main():
                 print(normalise_metric_values(dict(list(ganmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_dinov2_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_swav_data.items())[1:]), True))
-            elif args.findings == "FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FD'], ganmri_dinov2_data['FD'], ganmri_swav_data['FD'])
-            elif args.findings == "Precision":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Precision'], ganmri_dinov2_data['Precision'], ganmri_swav_data['Precision'])
-            elif args.findings == "Recall":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Recall'], ganmri_dinov2_data['Recall'], ganmri_swav_data['Recall'])
-            elif args.findings == "Unbiased-FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Unbiased FD'], ganmri_dinov2_data['Unbiased FD'], ganmri_swav_data['Unbiased FD'])
-            elif args.findings == "FC":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['FC'], ganmri_dinov2_data['FC'], ganmri_swav_data['FC'])
-            elif args.findings == "Density":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Density'], ganmri_dinov2_data['Density'], ganmri_swav_data['Density'])
-            elif args.findings == "Coverage":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, ganmri_inception_data['Coverage'], ganmri_dinov2_data['Coverage'], ganmri_swav_data['Coverage'])
+            elif args.findings == "metricmatrix":
+                plot_normalised_metric_graphs("ganmri", ganmri_all_data, standard_synth_pcts)
     if args.dataset == "dmmri":
         if args.encoder == "inception":
             if args.findings == "corrcoef":
@@ -247,20 +251,8 @@ def main():
             if args.findings == "normalise":
                 print(normalise_metric_values(dict(list(dmmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(dmmri_dinov2_data.items())[1:])))
-            elif args.findings == "FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FD'], dmmri_dinov2_data['FD'])
-            elif args.findings == "Precision":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Precision'], dmmri_dinov2_data['Precision'])
-            elif args.findings == "Recall":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Recall'], dmmri_dinov2_data['Recall'])
-            elif args.findings == "Unbiased-FD":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Unbiased FD'], dmmri_dinov2_data['Unbiased FD'])
-            elif args.findings == "FC":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['FC'], dmmri_dinov2_data['FC'])
-            elif args.findings == "Density":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Density'], dmmri_dinov2_data['Density'])
-            elif args.findings == "Coverage":
-                plot_metric_graph(args.dataset, args.findings, standard_synth_pcts, dmmri_inception_data['Coverage'], dmmri_dinov2_data['Coverage'])
+            elif args.findings == "metricmatrix":
+                plot_normalised_metric_graphs("dmmri", dmmri_all_data, standard_synth_pcts)
 
 if __name__ == '__main__':
     main()
