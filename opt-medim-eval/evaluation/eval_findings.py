@@ -59,6 +59,69 @@ dmmri_dinov2_data = {
     'Coverage': [0.9, 0.825, 0.675, 0.625, 0.55, 0.3625, 0.15]
 }
 
+dmmri_swav_data = {
+    'Synthetic Percentage': [0],
+    'FD': [-0.00000386387],
+    'Precision': [0.9],
+    'Recall': [0.9],
+    'Unbiased FD': [0.016326608],
+    'Density': [0.8825],
+    'Coverage': [0.9]
+}
+
+def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
+    """
+    Normalize a metric using min-max scaling.
+    Ignores None values in the series.
+    Optionally inverts scale if higher_is_better is False.
+    """
+    series = pd.Series(series, dtype='float')
+
+    valid_series = series.dropna()
+
+    if min_val is None:
+        min_val = np.percentile(valid_series, 1)
+    if max_val is None:
+        max_val = np.percentile(valid_series, 99)
+
+    if max_val == min_val:
+        norm_values = [1.0 if higher_is_better else 0.0] * len(valid_series)
+    else:
+        norm = (valid_series - min_val) / (max_val - min_val)
+        norm = np.clip(norm, 0, 1)
+        if higher_is_better == False:
+            norm = 1 - norm
+        norm_values = norm.tolist()
+
+    # Reconstruct full list with None in original positions
+    result = []
+    norm_iter = iter(norm_values)
+    for val in series:
+        result.append(next(norm_iter) if pd.notna(val) else None)
+
+    return result
+
+def normalise_metric_values(data_dict_to_normalise, swav=False):
+    if swav == True:
+        return {
+            'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
+            'Precision': normalise_metric(data_dict_to_normalise['Precision']),
+            'Recall': normalise_metric(data_dict_to_normalise['Recall']),
+            'Unbiased FD': normalise_metric(data_dict_to_normalise['Unbiased FD'], higher_is_better=False),
+            'Density': normalise_metric(data_dict_to_normalise['Density']),
+            'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
+        }
+    else:
+        return {
+            'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
+            'Precision': normalise_metric(data_dict_to_normalise['Precision']),
+            'Recall': normalise_metric(data_dict_to_normalise['Recall']),
+            'Unbiased FD': normalise_metric(data_dict_to_normalise['Unbiased FD'], higher_is_better=False),
+            'FC': normalise_metric(data_dict_to_normalise['FC']),
+            'Density': normalise_metric(data_dict_to_normalise['Density']),
+            'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
+        }
+
 def calc_correlation_coefficient(corrcoef_data_dict):
     """
     Compute correlation coefficients between the percentage of synthetic training data
@@ -124,58 +187,8 @@ def plot_metric_graph(dataset, metric, synth_pcts, i_vals, dino_vals, swav_vals=
     plt.grid(True)
     plt.show()
 
-def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
-    """
-    Normalize a metric using min-max scaling.
-    Ignores None values in the series.
-    Optionally inverts scale if higher_is_better is False.
-    """
-    series = pd.Series(series, dtype='float')
-
-    valid_series = series.dropna()
-
-    if min_val is None:
-        min_val = np.percentile(valid_series, 1)
-    if max_val is None:
-        max_val = np.percentile(valid_series, 99)
-
-    if max_val == min_val:
-        norm_values = [1.0 if higher_is_better else 0.0] * len(valid_series)
-    else:
-        norm = (valid_series - min_val) / (max_val - min_val)
-        norm = np.clip(norm, 0, 1)
-        if not higher_is_better:
-            norm = 1 - norm
-        norm_values = norm.tolist()
-
-    # Reconstruct full list with None in original positions
-    result = []
-    norm_iter = iter(norm_values)
-    for val in series:
-        result.append(next(norm_iter) if pd.notna(val) else None)
-
-    return result
-
-def normalise_metric_values(data_dict_to_normalise, swav=False):
-    if swav == True:
-        return {
-            'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
-            'Precision': normalise_metric(data_dict_to_normalise['Precision']),
-            'Recall': normalise_metric(data_dict_to_normalise['Recall']),
-            'Unbiased FD': normalise_metric(data_dict_to_normalise['Unbiased FD'], higher_is_better=False),
-            'Density': normalise_metric(data_dict_to_normalise['Density']),
-            'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
-        }
-    else:
-        return {
-            'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
-            'Precision': normalise_metric(data_dict_to_normalise['Precision']),
-            'Recall': normalise_metric(data_dict_to_normalise['Recall']),
-            'Unbiased FD': normalise_metric(data_dict_to_normalise['Unbiased FD'], higher_is_better=False),
-            'FC': normalise_metric(data_dict_to_normalise['FC']),
-            'Density': normalise_metric(data_dict_to_normalise['Density']),
-            'Coverage': normalise_metric(data_dict_to_normalise['Coverage']),
-        }
+def plot_normalised_metric_graphs():
+    return
 
 def main():
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
