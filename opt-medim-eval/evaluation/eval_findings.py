@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 import argparse
 
-standard_synth_pcts = [0, 50, 60, 70, 80, 90, 100]
+standard_synth_pcts = [0, 50, 60, 70, 80, 90, 100] # Initialising default synthetic percentage values
+
+# Initialising GANMRI data dictionaries
 
 ganmri_inception_data = {
     'Synthetic Percentage': standard_synth_pcts,
@@ -43,6 +45,8 @@ ganmri_all_data = {
     "SwAV": ganmri_swav_data
 }
 
+# Initialising DMMRI data dictionaries
+
 dmmri_inception_data = {
     'Synthetic Percentage': standard_synth_pcts,
     'FD': [-0.000152408, 83.53286168, 100.3606771, 114.4805349, 138.1902068, 155.750424, 175.3303901],
@@ -72,26 +76,30 @@ dmmri_all_data = {
 
 def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
     """
-    Normalize a metric using min-max scaling.
+    Normalise a metric using min-max scaling.
     Ignores None values in the series.
     Optionally inverts scale if higher_is_better is False.
     """
     series = pd.Series(series, dtype='float')
 
+    # Drop None/NaN values for normalisation
     valid_series = series.dropna()
 
+    # Use percentiles if no explicit min/max are provided
     if min_val is None:
         min_val = np.percentile(valid_series, 1)
     if max_val is None:
         max_val = np.percentile(valid_series, 99)
 
+    # Handle edge case: constant metric values
     if max_val == min_val:
         norm_values = [1.0 if higher_is_better else 0.0] * len(valid_series)
     else:
+        # Apply min-max normalisation
         norm = (valid_series - min_val) / (max_val - min_val)
-        norm = np.clip(norm, 0, 1)
+        norm = np.clip(norm, 0, 1) # Clip values to [0, 1] range
         if higher_is_better == False:
-            norm = 1 - norm
+            norm = 1 - norm # Invert if lower values are better
         norm_values = norm.tolist()
 
     # Reconstruct full list with None in original positions
@@ -103,9 +111,11 @@ def normalise_metric(series, min_val=None, max_val=None, higher_is_better=True):
     return result
 
 def normalise_metric_values(data_dict_to_normalise, swav=False):
+    """Normalise a dictionary of metric values using min-max normalisation."""
     if swav == True:
+        # Normalise metrics specific to SwAV configuration
         normalised_dict = {
-            'Synthetic Percentage': [0, 80, 90, 100],
+            'Synthetic Percentage': [0, 80, 90, 100], # Preset vakyes for SwAV
             'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
             'Precision': normalise_metric(data_dict_to_normalise['Precision']),
             'Recall': normalise_metric(data_dict_to_normalise['Recall']),
@@ -115,8 +125,9 @@ def normalise_metric_values(data_dict_to_normalise, swav=False):
         }
         return normalised_dict
     else:
+        # Normalise metrics using general configuration
         normalised_dict = {
-            'Synthetic Percentage': standard_synth_pcts,
+            'Synthetic Percentage': standard_synth_pcts, # Use predefined percentages
             'FD': normalise_metric(data_dict_to_normalise['FD'], higher_is_better=False),
             'Precision': normalise_metric(data_dict_to_normalise['Precision']),
             'Recall': normalise_metric(data_dict_to_normalise['Recall']),
@@ -276,13 +287,16 @@ def generate_metric_graph_matrix(dataset, synth_pcts):
     plt.show()
 
 def main():
+    # Parse dataset category, encoder network and type of finding as command line arguments
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
     parser.add_argument("--dataset", type=str, default=None, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
     parser.add_argument("--encoder", type=str, default=None, help="Name of the feature extractor encoder used for the experiments (e.g. inception, dinov2, swav)")
     parser.add_argument("--findings", type=str, default="all", help="Type of evaluation metric findings to plot (e.g. corrcoef, normalise, metricmatrix).")
     args = parser.parse_args()
 
+    # Calculating findings for GANMRI data
     if args.dataset == "ganmri":
+        # Calculate correlation coefficient values for each encoder
         if args.encoder == "inception":
             if args.findings == "corrcoef":
                 calc_correlation_coefficient(ganmri_inception_data)
@@ -299,17 +313,23 @@ def main():
             if args.findings == "all":
                 calc_correlation_coefficient(ganmri_swav_data)
         elif args.encoder == None:
+            # Output normalised metric values for each GANMRI data dictionary
             if args.findings == "normalise":
                 print(normalise_metric_values(dict(list(ganmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_dinov2_data.items())[1:])))
                 print(normalise_metric_values(dict(list(ganmri_swav_data.items())[1:]), True))
+            # Output graphs for each GANMRI metric
             elif args.findings == "metrics":
                 plot_metric_graphs(ganmri_all_data, standard_synth_pcts)
+            # Output graphs for each GANMRI normalised metric
             elif args.findings == "normalisedmetrics":
                 plot_normalised_metric_graphs(ganmri_all_data, standard_synth_pcts)
+            # Output GANMRI metric graph matrix
             elif args.findings == "metricmatrix":
                 generate_metric_graph_matrix(ganmri_all_data, standard_synth_pcts)
+    # Calculating findings for GANMRI data
     if args.dataset == "dmmri":
+        # Calculate correlation coefficient values for each encoder
         if args.encoder == "inception":
             if args.findings == "corrcoef":
                 calc_correlation_coefficient(dmmri_inception_data)
@@ -321,13 +341,17 @@ def main():
             if args.findings == "all":
                 calc_correlation_coefficient(dmmri_dinov2_data)
         elif args.encoder == None:
+            # Output normalised metric values for each DMMRI data dictionary
             if args.findings == "normalise":
                 print(normalise_metric_values(dict(list(dmmri_inception_data.items())[1:])))
                 print(normalise_metric_values(dict(list(dmmri_dinov2_data.items())[1:])))
+            # Output graphs for each DMMRI metric
             elif args.findings == "metrics":
                 plot_metric_graphs(dmmri_all_data, standard_synth_pcts)
+            # Output graphs for each DMMRI normalised metric
             elif args.findings == "normalisedmetrics":
                 plot_normalised_metric_graphs(dmmri_all_data, standard_synth_pcts)
+            # Output DMMRI metric graph matrix
             elif args.findings == "metricmatrix":
                 generate_metric_graph_matrix(dmmri_all_data, standard_synth_pcts)
 

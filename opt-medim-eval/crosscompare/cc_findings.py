@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import argparse
 
+# Initialising GANMRI data dictionaries
+
 ganmri_inception_data = {
     "Segmentation Performance Score": [0.0342, 0.0528, 0.0589, 0.0611, 0.0694, 0.0726, 0.0806], 
     "FD": [97.71195507, 163.8193511, 0.0000654, 209.3618621, 187.5085843, 142.5396132, 118.8942583],
@@ -34,6 +36,8 @@ ganmri_swav_data = {
     "Density": [0.785, 1, 1, 0.91],
     "Coverage": [1, 1, 1, 1]
 }
+
+# Initialising DMMRI data dictionaries
 
 dmmri_inception_data = {
     "Segmentation Performance Score": [0.0093, 0.0188, 0.0300, 0.0380, 0.0402, 0.0481, 0.0536], 
@@ -72,18 +76,6 @@ def calc_correlation_coefficient(corrcoef_data_dict):
         - 'Density'
         - 'Coverage'
 
-    Parameters:
-        data_dict (dict): Dictionary with the following keys:
-        - 'Segmentation Performance Score'
-        - 'FD'
-        - 'IS'
-        - 'Precision'
-        - 'Recall'
-        - 'Unbiased FD'
-        - 'FC'
-        - 'Density'
-        - 'Coverage'
-
     Returns:
         pd.Series: Correlation coefficients indexed by variable name.
     """
@@ -112,12 +104,14 @@ def calc_correlation_coefficient_variance(correlation_coefficient_series):
     return np.var(abs_correlations)
 
 def main():
+    # Parse dataset category, encoder network and type of finding as command line arguments
     parser = argparse.ArgumentParser(description="Generate findings of cross-comparison between evaluation metric values and segmentation performance scores")
     parser.add_argument("dataset", type=str, default=None, help="Name of the dataset category the experiments were performed on (e.g. ganmri)")
     parser.add_argument("encoder", type=str, help="Name of the feature extractor encoder used to calculate evaluation metrics")
     parser.add_argument("--findings", type=str, default=None, help="Type of cross-comparison findings to generate (e.g. corrcoef, ccvariance).")
     args = parser.parse_args()
 
+    # Calculating correlation coefficient values for GANMRI data
     if args.dataset == "ganmri":
         if args.encoder == "inception":
             corrcoef = calc_correlation_coefficient(ganmri_inception_data)
@@ -146,6 +140,7 @@ def main():
             elif args.findings == "all":
                 print(corrcoef)
                 print(calc_correlation_coefficient_variance(corrcoef))
+    # Calculating correlation coefficient values for DMMRI data
     elif args.dataset == "dmmri":
         if args.encoder == "inception":
             corrcoef = calc_correlation_coefficient(dmmri_inception_data)
@@ -166,6 +161,5 @@ def main():
                 print(corrcoef)
                 print(calc_correlation_coefficient_variance(corrcoef))
         
-
 if __name__ == '__main__':
     main()

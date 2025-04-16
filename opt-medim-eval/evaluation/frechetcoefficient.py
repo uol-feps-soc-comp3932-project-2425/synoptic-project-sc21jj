@@ -44,10 +44,12 @@ def frechet_coefficient(dataset_category):
         iterator += 1
 
 def main():
-    parser = argparse.ArgumentParser(description="Calculate Frechet Coefficient between two imaging datasets")
+    # Parse dataset category as a command line argument
+    parser = argparse.ArgumentParser(description="Calculate Frechet Coefficient scores for different models and different real/synthetic datasets")
     parser.add_argument("ds_category", type=str, help="Dataset category of the imaging data being compared (e.g. GAN-MRI, DM-MRI)")
     args = parser.parse_args()
 
+    # Calculate Frechet coefficient values
     frechet_coefficient(args.ds_category)
 
 if __name__ == '__main__':

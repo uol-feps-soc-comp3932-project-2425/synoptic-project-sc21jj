@@ -41,38 +41,47 @@ def nii2png(nii_path, png_dir):
 
 def process_real_directory(root_dir):
     """Convert all real .nii files to PNG format."""
+
+    # Define input and output directories
     real_nii_dir = root_dir
     real_parent_dir = os.path.dirname(real_nii_dir)
     real_png_dir = os.path.join(real_parent_dir, "realpng")
 
+    # Check if the real .nii directory exists
     if os.path.exists(real_nii_dir):
         for file in os.listdir(real_nii_dir):
+            # Process only .nii files
             if file.endswith(".nii"):
                 nii_path = os.path.join(real_nii_dir, file)
-                nii2png(nii_path, real_png_dir)
+                nii2png(nii_path, real_png_dir) # Convert to PNG
                 print(f"Converted {nii_path} -> {real_png_dir}")
 
 def process_synthetic_directory(root_dir):
     """Convert all synthetic .nii files to PNG format."""
+
+    # Define input and output directories
     synth_nii_dir = root_dir
     synth_parent_dir = os.path.dirname(synth_nii_dir)
     synth_png_dir = os.path.join(synth_parent_dir, "synthpng")
 
+    # Check if the synthetic .nii directory exists
     if os.path.exists(synth_nii_dir):
         for file in os.listdir(synth_nii_dir):
+            # Process only .nii files
             if file.endswith(".nii"):
                 nii_path = os.path.join(synth_nii_dir, file)
-                nii2png(nii_path, synth_png_dir)
+                nii2png(nii_path, synth_png_dir) # Convert to PNG
                 print(f"Converted {nii_path} -> {synth_png_dir}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Randomly sample 50 .nii files from an MRI imaging dataset")
+    # Parse paths to real and synthetic MRI scans as command line arguments 
+    parser = argparse.ArgumentParser(description="Convert .nii files from real and synthetic MRI imaging datasets to PNG format")
     parser.add_argument("--real_dir", type=str, help="Path to the directory containing the real .nii files")
-    parser.add_argument("--synth_dir", type=str, help="Path to the directory containing the real .nii files")
+    parser.add_argument("--synth_dir", type=str, help="Path to the directory containing the synth .nii files")
     args = parser.parse_args()
 
     # Process both 'Real' and 'Synthetic' directories
-    #process_real_directory(args.real_dir)
+    process_real_directory(args.real_dir)
     process_synthetic_directory(args.synth_dir)
 
     print("Conversion complete.")

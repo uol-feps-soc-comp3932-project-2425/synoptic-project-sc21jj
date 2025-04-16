@@ -8,6 +8,7 @@ def collect_files(directory):
     return [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith('.png')]
 
 def main():
+    # Parse path to source directory and total number of samples as command line arguments
     parser = argparse.ArgumentParser(description="Randomly sample a given number of .png files from a specified directory.")
     parser.add_argument("source_dir", type=str, help="Path to the source directory")
     parser.add_argument("sample_size", type=int, help="Number of .png files to be sampled from source directory")

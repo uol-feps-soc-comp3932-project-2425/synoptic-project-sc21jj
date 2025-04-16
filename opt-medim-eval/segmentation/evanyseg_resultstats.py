@@ -47,7 +47,7 @@ def calculate_variance_predicted_dice(data):
     return np.var(preds_dice_values)
 
 # Set up the command line argument parser
-parser = argparse.ArgumentParser(description="Calculate relevant statistics based on true_dice and preds_dice values.")
+parser = argparse.ArgumentParser(description="Calculate relevant statistics based on true and predicted DICE values.")
 parser.add_argument("filename", help="Path to the CSV file containing the data")
 
 # Parse command line arguments

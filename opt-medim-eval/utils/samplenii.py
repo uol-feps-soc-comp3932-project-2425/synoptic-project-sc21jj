@@ -27,23 +27,24 @@ def decompress_nii_gz_files(directory):
     for file in glob.glob(os.path.join(directory, "*.nii.gz")):
         output_file = file[:-3]  # Remove .gz extension
         with gzip.open(file, 'rb') as f_in, open(output_file, 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
+            shutil.copyfileobj(f_in, f_out) # Copy decompressed file data
         os.remove(file)  # Remove the compressed file
 
 def main():
-    parser = argparse.ArgumentParser(description="Randomly sample 50 .nii files from an MRI imaging dataset")
+    # Parse paths to source and output directories and total number of samples as command line arguments
+    parser = argparse.ArgumentParser(description="Randomly sample a given number of .nii files from an MRI imaging dataset")
     parser.add_argument("--source_dir", type=str, help="Path to the root directory containing all .nii files to sample from")
     parser.add_argument("--output_dir", type=str, help="Path to where the directory containing the sampled subset should be output")
     parser.add_argument("--sample_size", type=int, default=50, help="Number of .nii files to be sampled from source directory")
     args = parser.parse_args()
 
-    # Step 1: Find all .nii.gz files in source directory
+    # Find all .nii.gz files in source directory
     all_nii_files = find_nii_gz_files(args.source_dir)
 
-    # Step 2: Sample 'sample_size' files and copy them to root directory
+    # Sample 'sample_size' files and copy them to root directory
     sampled_files = copy_sampled_files(all_nii_files, args.output_dir, args.sample_size)
 
-    # Step 3: Decompress the copied files
+    # Decompress the copied files
     decompress_nii_gz_files(args.output_dir)
 
     print(f"Sampled {args.sample_size} .nii files from {args.source_dir}.")

@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import argparse
 
-# Initialising loss data
+# Initialising GANMRI loss data dictionaries
+
 ganmri10_loss_data = {
     "100% real": [3.884354585, 1.358598612, 0.628641151, 0.178619057, 0.28054988, 0.156474985, 0.126280726, 0.04570445, 0.063098292, 0.032721977, 0.025071275, 0.025451113, 0.013941883, 0.014005613, 0.016696906],
     "50% real, 50% synthetic": [5.536033329, 4.005757794, 0.617330238, 0.514298912, 0.545020962, 0.149958007, 0.267717289, 0.262782387, 0.102709049, 0.107502402, 0.065172702, 0.081478671, 0.011430854, 0.025130068, 0.01961707],
@@ -19,6 +20,8 @@ ganmri100_loss_data = {
     "10% real, 90% synthetic": [5.973773718, 0.55383724, 0.320203383, 0.196291646, 0.195392398, 0.135961285, 0.080699529, 0.081212007, 0.059856105, 0.051845521, 0.044061168, 0.040516923, 0.032038143, 0.027502517, 0.024514136],
     "100% synthetic": [6.190061897, 1.110511743, 0.597303919, 0.386488788, 0.263256865, 0.182324842, 0.096339608, 0.121453243, 0.087791484, 0.075079178, 0.061271388, 0.04472199, 0.040552143, 0.032239854, 0.028314398]
 }
+
+# Initialising DMMRI loss data dictionaries
 
 dmmri10_loss_data = {
     "100% real": [3.392434488981962, 0.7111654616892338, 0.9370306126656942, 0.526241984218359, 0.24864055146463215, 0.10232592094689608, 0.11927612498402596, 0.07702357694506645, 0.025520379655063152, 0.051077098585665226, 0.040097322256769985, 0.019676443422213197, 0.03128558746539056, 0.017991948407143354, 0.006700481986626983],
@@ -37,7 +40,8 @@ dmmri100_loss_data = {
     "100% synthetic": [7.1446420550346375, 1.057029975578189, 0.29848636500537395, 0.21606835164129734, 0.1850613234564662, 0.11943125165998936, 0.0479792021214962, 0.05354518489912152, 0.03947695158421993, 0.027035916689783335, 0.020101793576031923, 0.019316612975671887, 0.0137683036737144, 0.012746497755870223, 0.010196073213592172]
 }
 
-# Initialising performance data
+# Initialising GANMRI performance data dictionaries
+
 ganmri10_perf_data = {
     'Training Data Ratio': ['100% Real', '50/50', '25/75', '100% Synthetic'],
     'True DICE Avg': [0.696, 0.784, 0.844, 0.516],
@@ -57,6 +61,8 @@ ganmri100_perf_data = {
     'Difference Avg': [0.0589, 0.0342, 0.0806, 0.0726, 0.0528, 0.0694, 0.0611],
     'Difference Var': [0.00310, 0.00180, 0.0133, 0.0133, 0.00594, 0.00887, 0.00550]
 }
+
+# Initialising DMMRI performance data dictionaries
 
 dmmri10_perf_data = {
     'Training Data Ratio': ['100% Real', '50/50', '25/75', '100% Synthetic'],
@@ -78,7 +84,8 @@ dmmri100_perf_data = {
     'Difference Var': [0.003853763507695141, 0.00700366645422195, 0.004602023765869756, 0.004352758158717241, 0.006579429121842518, 0.0020643015640144096, 0.00502952649356573]
 }
 
-# Initialising correlation coefficient data
+# Initialising GANMRI correlation coefficient data dictionaries
+
 ganmri10_corrcoef_data = {
     'Synthetic Percentage': [0, 50, 75, 100],
     'True DICE Avg': [0.696, 0.784, 0.844, 0.516],
@@ -98,6 +105,8 @@ ganmri100_corrcoef_data = {
     'Difference Avg': [0.0589, 0.0342, 0.0806, 0.0726, 0.0528, 0.0694, 0.0611],
     'Difference Var': [0.00310, 0.00180, 0.0133, 0.0133, 0.00594, 0.00887, 0.00550]
 }
+
+# Initialising DMMRI correlation coefficient data dictionaries
 
 dmmri10_corrcoef_data = {
     'Synthetic Percentage': [0, 50, 75, 100],
@@ -194,15 +203,21 @@ def plot_segmentation_performance(perf_data_dict, category_col: str = 'Training 
         ('Difference Avg', 'Difference Var', 'Difference in DICE Score')
     ]
 
+    # Create a single-row, three-column figure for subplots
     fig, axes = plt.subplots(1, 3, figsize=(18, 6), constrained_layout=True)
 
+    # Generate each subplot
     for i, (avg_key, var_key, title) in enumerate(charts):
         ax = axes[i]
         ax2 = ax.twinx()
 
+        # Plot average values as bars on the left axis
         bars_avg = ax.bar(x - width/2, df[avg_key], width, label='Average', color='tab:blue')
+
+        # Plot variance values as bars on the right axis
         bars_var = ax2.bar(x + width/2, df[var_key], width, label='Variance', color='tab:orange')
 
+        # Set plot titles and labels
         ax.set_title(title)
         ax.set_xlabel(category_col)
         ax.set_xticks(x)
@@ -281,6 +296,7 @@ def calc_correlation_coefficient(corrcoef_data_dict):
     print(pd.Series(correlations, name='correlation_with_synthetic_percentage'))
 
 def main():
+    # Parse dataset category/size and type of finding as command line arguments
     parser = argparse.ArgumentParser(description="Generate findings of segmentation tasks")
     parser.add_argument("dataset", type=str, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI10)")
     parser.add_argument("--findings", type=str, default="all", help="Type of segmentation task findings to generate (e.g. loss, performance, corrcoef).")
