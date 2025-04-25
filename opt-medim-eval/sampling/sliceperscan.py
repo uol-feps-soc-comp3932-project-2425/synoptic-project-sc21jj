@@ -1,82 +1,74 @@
 import os
-import random
-import sys
 import shutil
+import random
+import re
+import argparse
 
-def sample_real_slices(source_dir, target_dir):
-    """Randomly selects one .png slice per scan across all timestamps and saves it."""
+def sample_slices(source_dir, target_dir):
+    """
+    Randomly selects one .png slice per scan (grouped by the prefix before '_slice_') 
+    and saves it to the target directory.
+    """
+
+    # Check if source directory exists
     if not os.path.exists(source_dir):
         print(f"Directory not found: {source_dir}")
         return
 
-    os.makedirs(target_dir, exist_ok=True)  # Ensure target directory exists
+    # Ensure target directory exists
+    os.makedirs(target_dir, exist_ok=True)
 
+    # Compile generic regex pattern to extract scan name and slice index
+    pattern = re.compile(r'^(.*)_slice_(\d+)\.png$')
     scan_dict = {}
 
-    # Group PNG files based on their original scan name (ignoring timestamps)
+    # Group slices by scan name
     for file in os.listdir(source_dir):
         if file.endswith(".png"):
-            parts = file.split("_")
-            if "time" in parts:
-                scan_name = "_".join(parts[:-4])  # Ignore timestamps and slice number
-            else:
-                scan_name = "_".join(parts[:-2])  # Standard non-timestamped files
-            
-            if scan_name not in scan_dict:
-                scan_dict[scan_name] = []
-            scan_dict[scan_name].append(file)
+            match = pattern.match(file)
+            if match:
+                scan_name = match.group(1)
+                if scan_name not in scan_dict:
+                    scan_dict[scan_name] = []
+                scan_dict[scan_name].append(file)
 
     # Randomly select one slice per scan and copy it to the target directory
     for scan_name, slices in scan_dict.items():
-        chosen_slice = random.choice(slices)  # Select one at random
+        chosen_slice = random.choice(slices)
         src_path = os.path.join(source_dir, chosen_slice)
         dest_path = os.path.join(target_dir, chosen_slice)
-        shutil.copy(src_path, dest_path)  # Copy instead of delete
+        shutil.copy(src_path, dest_path)
         print(f"Copied: {chosen_slice} -> {target_dir}")
 
-def sample_synthetic_slices(source_dir, target_dir):
-    """Randomly selects one .png slice per scan in the synthetic directory."""
-    if not os.path.exists(source_dir):
-        print(f"Directory not found: {source_dir}")
-        return
+def process_directories(real_dir, synth_dir):
+    """Processes realpng and syntheticpng directories and outputs downsampled slices."""
 
-    os.makedirs(target_dir, exist_ok=True)  # Ensure target directory exists
+    # Define source directories for real and synthetic PNGs
+    real_png_dir = os.path.join(real_dir, "realpng")
+    synth_png_dir = os.path.join(synth_dir, "synthpng")
 
-    scan_dict = {}
+    # Define output directories for sampled slices
+    sampled_real_png_dir = os.path.join(real_dir, "sampled_realpng")
+    sampled_synthetic_png_dir = os.path.join(synth_dir, "sampled_syntheticpng")
 
-    # Group PNG files based on their original scan name
-    for file in os.listdir(source_dir):
-        if file.endswith(".png"):
-            scan_name = "_".join(file.split("_")[:-2])  # Remove slice number info
-            if scan_name not in scan_dict:
-                scan_dict[scan_name] = []
-            scan_dict[scan_name].append(file)
+    # Ensure output directories exist
+    os.makedirs(sampled_real_png_dir, exist_ok=True)
+    os.makedirs(sampled_synthetic_png_dir, exist_ok=True)
 
-    # Randomly select one slice per scan and copy it to the target directory
-    for scan_name, slices in scan_dict.items():
-        chosen_slice = random.choice(slices)  # Select one at random
-        src_path = os.path.join(source_dir, chosen_slice)
-        dest_path = os.path.join(target_dir, chosen_slice)
-        shutil.copy(src_path, dest_path)  # Copy instead of delete
-        print(f"Copied: {chosen_slice} -> {target_dir}")
+    # Perform sampling on real and synthetic image directories
+    sample_slices(real_png_dir, sampled_real_png_dir)
+    sample_slices(synth_png_dir, sampled_synthetic_png_dir)
 
-def process_directories(root_dir):
-    """Processes realpng and syntheticpng directories and outputs sampled images."""
-    real_png_dir = os.path.join(root_dir, "realpng")
-    synthetic_png_dir = os.path.join(root_dir, "syntheticpng")
+def main():
+    # Parse paths to real and synthetic PNG directories as command line arguments
+    parser = argparse.ArgumentParser(description="Randomly downsample MRI slice .png files from a specified directory to keep only one slice per scan.")
+    parser.add_argument("real_directory", type=str, help="Path to the real MRI source directory")
+    parser.add_argument("synthetic_directory", type=str, help="Path to the synthetic MRI source directory")
+    args = parser.parse_args()
 
-    sampled_real_png_dir = os.path.join(root_dir, "sampled_realpng")
-    sampled_synthetic_png_dir = os.path.join(root_dir, "sampled_syntheticpng")
+    process_directories(args.real_directory, args.synthetic_directory)
 
-    sample_real_slices(real_png_dir, sampled_real_png_dir)
-    sample_synthetic_slices(synthetic_png_dir, sampled_synthetic_png_dir)
+    print("Slice downsampling complete.")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python sample_slices.py <root_directory>")
-        sys.exit(1)
-
-    root_directory = sys.argv[1]
-    process_directories(root_directory)
-
-    print("Sampling complete.")
+    main()

@@ -76,8 +76,8 @@ def process_synthetic_directory(root_dir):
 def main():
     # Parse paths to real and synthetic MRI scans as command line arguments 
     parser = argparse.ArgumentParser(description="Convert .nii files from real and synthetic MRI imaging datasets to PNG format")
-    parser.add_argument("--real_dir", type=str, help="Path to the directory containing the real .nii files")
-    parser.add_argument("--synth_dir", type=str, help="Path to the directory containing the synth .nii files")
+    parser.add_argument("real_dir", type=str, help="Path to the directory containing the real .nii files")
+    parser.add_argument("synth_dir", type=str, help="Path to the directory containing the synth .nii files")
     args = parser.parse_args()
 
     # Process both 'Real' and 'Synthetic' directories
