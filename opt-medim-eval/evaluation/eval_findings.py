@@ -289,8 +289,8 @@ def generate_metric_graph_matrix(dataset, synth_pcts):
 def main():
     # Parse dataset category, encoder network and type of finding as command line arguments
     parser = argparse.ArgumentParser(description="Plot findings of evaluation metric experiments")
-    parser.add_argument("--dataset", type=str, default=None, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
-    parser.add_argument("--encoder", type=str, default=None, help="Name of the feature extractor encoder used for the experiments (e.g. inception, dinov2, swav)")
+    parser.add_argument("dataset", type=str, default=None, help="Name of the dataset that the experiments were conducted on (e.g. GANMRI, DMMRI)")
+    parser.add_argument("encoder", type=str, default=None, help="Name of the feature extractor encoder used for the experiments (e.g. inception, dinov2, swav)")
     parser.add_argument("--findings", type=str, default="all", help="Type of evaluation metric findings to plot (e.g. corrcoef, normalise, metricmatrix).")
     args = parser.parse_args()
 

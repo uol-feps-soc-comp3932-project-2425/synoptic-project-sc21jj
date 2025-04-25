@@ -33,8 +33,8 @@ def decompress_nii_gz_files(directory):
 def main():
     # Parse paths to source and output directories and total number of samples as command line arguments
     parser = argparse.ArgumentParser(description="Randomly sample a given number of .nii files from an MRI imaging dataset")
-    parser.add_argument("--source_dir", type=str, help="Path to the root directory containing all .nii files to sample from")
-    parser.add_argument("--output_dir", type=str, help="Path to where the directory containing the sampled subset should be output")
+    parser.add_argument("source_dir", type=str, help="Path to the root directory containing all .nii files to sample from")
+    parser.add_argument("output_dir", type=str, help="Path to where the directory containing the sampled subset should be output")
     parser.add_argument("--sample_size", type=int, default=50, help="Number of .nii files to be sampled from source directory")
     args = parser.parse_args()
 

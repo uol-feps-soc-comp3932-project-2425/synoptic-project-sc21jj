@@ -108,7 +108,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate findings of cross-comparison between evaluation metric values and segmentation performance scores")
     parser.add_argument("dataset", type=str, default=None, help="Name of the dataset category the experiments were performed on (e.g. ganmri)")
     parser.add_argument("encoder", type=str, help="Name of the feature extractor encoder used to calculate evaluation metrics")
-    parser.add_argument("--findings", type=str, default=None, help="Type of cross-comparison findings to generate (e.g. corrcoef, ccvariance).")
+    parser.add_argument("--findings", type=str, default="all", help="Type of cross-comparison findings to generate (e.g. corrcoef, ccvariance).")
     args = parser.parse_args()
 
     # Calculating correlation coefficient values for GANMRI data
